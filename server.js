@@ -51,6 +51,9 @@ hbs.registerHelper('safe', function(name) {
 app.get('/', function (req, res, next) {
   return res.render('index', {});
 });
+app.get('/test', function (req, res, next) {
+  return res.render('test', {});
+});
 
 
 // SOCKETS
