@@ -5,7 +5,7 @@ var express = require("express")
   , _ = require("underscore");
 
 var phraseRange = 23;
-var basePhraseRange = 15;
+var bassPhraseRange = 15;
 var sectionLength = 4;
 var phraseLength = 8;
 
@@ -65,20 +65,20 @@ var generatePhrase = function(range) {
 
 var generateSection = function() {
   var phrases = [];
-  var basePhrases = [];
+  var bassPhrases = [];
   var phrase = null;
   
   for(var i=0; i<phraseLength; i++){
     phrase = generatePhrase(phraseRange);
     phrases.push(phrase);
     
-    basePhrase = generatePhrase(basePhraseRange);
-    basePhrases.push(basePhrase);
+    bassPhrase = generatePhrase(bassPhraseRange);
+    bassPhrases.push(bassPhrase);
   }
   
   return {
     rootValue: generateRootValue(),
-    basePhrases: basePhrases,
+    bassPhrases: bassPhrases,
     phrases: phrases
   };
 };
