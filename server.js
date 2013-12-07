@@ -10,8 +10,6 @@ var phraseLength = 8;
 
 var rolesLength = 8;
 
-var phraseRootValueStart = 30;
-var phraseRootValueEnd = 60;
 
 var Roles = require("./roles.js");
 var roles = new Roles(rolesLength);
@@ -30,27 +28,52 @@ var setScale = function(scale) {
   state.scale = scale;
 }
 
+var setDensity = function(density) {
+  state.density = density;
+}
+
 var setTempo = function(tempo) {
   state.tempo = tempo;
 }
 
 
-var generatePhrase = function(phraseRange) {
-  var randNum = randNum = Math.floor((Math.random() * phraseRange));
-  var rootNum = _.random(phraseRootValueStart, phraseRootValueEnd);
-  return [randNum, rootNum];
+var generateRootValue = function(phraseRange) {
+  var rand = Math.floor(Math.random() * 100);
+  var phrase = null;
+  
+  if(rand < 50) {
+    return 30;
+  }
+  else if (rand < 80) {
+    return 37;
+  }
+  else if (rand < 95) {
+    return 35;
+  }
+  else {
+    return 34;
+  }
+  
+  return phrase;
+}
+
+var generatePhrase = function(range) {
+  return _.random(0, range);
 }
 
 var generateSection = function() {
-  var section = [];
+  var phrases = [];
   var phrase = null;
   
   for(var i=0; i<phraseLength; i++){
     phrase = generatePhrase(phraseRange);
-    section.push(phrase);
+    phrases.push(phrase);
   }
   
-  return section;
+  return {
+    root: generateRootValue(),
+    phrases: phrases
+  };
 };
 
 
@@ -66,6 +89,7 @@ var state = {};
 state.tempo = null;
 state.sections = [];
 
+setDensity(80);
 setTempo(120);
 setScale('majorScale');
 generateSections();
