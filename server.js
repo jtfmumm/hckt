@@ -4,6 +4,9 @@ var express = require("express")
   , hbs = require("hbs")
   , _ = require("underscore");
 
+var Roles = require("./roles.js");
+var roles = new Roles(8);
+
 var app = express();
 var server = http.createServer(app);
 var io = socketio.listen(server);
@@ -14,6 +17,10 @@ var blocks = {};
 
 
 //STATE UTILS
+var setScale = function(scale) {
+  state.scale = scale;
+}
+
 var setTempo = function(tempo) {
   state.tempo = tempo;
 };
@@ -30,13 +37,14 @@ var generateSections = function() {
 
 
 // GLOBAL STATE
-var availablePhrases = _.range(15);
+var availablePhrases = _.range(16);
 
 var state = {};
 state.tempo = null;
 state.sections = [];
 
 setTempo(120);
+setScale('majorScale');
 generateSections();
 
 console.log(JSON.stringify(state));
@@ -86,15 +94,21 @@ app.get('/test', function (req, res, next) {
 
 // SOCKETS
 io.sockets.on('connection', function (socket) {
-  console.log('socket connected!');   
+  var assignedRole = null;
   
+  assignedRole = roles.assignRole(socket);
+  
+  console.log('assignedRole:' + JSON.stringify(assignedRole));
+  console.log('socketId = ' + socket.id);
+  roles.print();
+  
+  console.log('socket connected!');   
   socket.emit('state.current', state);
   
   socket.on('state.change', function(data) {
     socket.broadcast.emit('state.change', state);
   });
 });
-
 
 
 server.listen(8080, '0.0.0.0');
