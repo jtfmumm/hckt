@@ -6,8 +6,10 @@ var stopFlag = false;
 // var settings = {
 // 	tempo: 120,
 // 	scale: "majorScale"
+//  density: 100,
 //  sections: [
-		// [[0, 30], [4, 50], [14, 40], [13, 20]...], [phraseIndex, rootValue] pairs 
+		// {"rootValue": 
+		//	"phrases": [[0, 30], [4, 50], [14, 40], [13, 20]...]}, [phraseIndex, rootValue] pairs 
 		// ...
 		// ]
 // }
@@ -116,15 +118,18 @@ function makePhrase(notes) {
 
 var playPhrase = function(section, phrasePosition) {
 	var startTime = ctx.currentTime;
-	var phraseRoot = settings["sections"][section][phrasePosition][1];
-	var phraseIndex = settings["sections"][section][phrasePosition][0];
+	var phraseRoot = settings["sections"][section]["rootValue"];
+	var phraseIndex = settings["sections"][section]["phrases"][phrasePosition];
 	phrase = phrases[phraseIndex];//settings["sections"][section][phrase][0];
 	for (var i = 0; i < phrase.notes.length; i++) {
 		var beatValue = (1 / (settings.tempo / 60)) * 4; 
 		var toneLookup = getNoteNumber(phrase.notes[i].tone, phraseRoot);
 		var freq = _tonesTable[toneLookup];
     	var duration = beatValue / phrase.notes[i].noteValue;
-    	playOsc(freq, duration, startTime);
+    	var roll = (Math.random() * 100);
+    	if (roll < settings.density) {
+    		playOsc(freq, duration, startTime);
+        }
 		var startTime = startTime + duration;
 	}
 }
