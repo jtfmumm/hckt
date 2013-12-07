@@ -9,7 +9,8 @@ var stopFlag = false;
 //  density: 100,
 //  sections: [
 		// {"rootValue": 
-		//	"phrases": [[0, 30], [4, 50], [14, 40], [13, 20]...]}, [phraseIndex, rootValue] pairs 
+		//	"phrases": [...]}, phraseIndex values 0-23
+		//	"bassPhrases": [...]}, bassPhraseIndex values 0-15 
 		// ...
 		// ]
 // }
@@ -98,6 +99,30 @@ var phrases = [
 	makePhrase([[2, 8], [5, 8], [1, 4]]),
 ]
 
+
+//Representing relative notes as scale degrees 1-7
+var bassPhrases = [
+	makePhrase([[1, 2]]),
+	makePhrase([[1, 2]]),
+	makePhrase([[1, 2]]),
+	makePhrase([[5, 2]]),
+
+	makePhrase([[5, 2]]),
+	makePhrase([[4, 2]]),
+	makePhrase([[5, 4], [1, 4]]),
+	makePhrase([[1, 4], [5, 4]]),
+
+	makePhrase([[4, 8], [5, 8], [1, 4]]),
+	makePhrase([[1, 8], [4, 8], [5, 4]]),
+	makePhrase([[1, 8], [2, 8], [3, 8], [4, 8]]),
+	makePhrase([[5, 8], [6, 8], [7, 8], [8, 8]]),
+
+	makePhrase([[3, 8], [6, 8], [2, 8], [5, 8]]),
+	makePhrase([[3, 2]]),
+	makePhrase([[5, 8], [4, 8], [3, 8], [2, 8]]),	
+	makePhrase([[1, 8], [1, 16], [2, 16], [3, 16], [5, 16], [6, 16], [8, 16]]), //sunshine
+]
+
 function Note(tone, noteValue) {
 	this.tone = tone;
 	this.noteValue = noteValue;
@@ -116,11 +141,18 @@ function makePhrase(notes) {
 	return new Phrase(tempPhrase);
 }
 
-var playPhrase = function(section, phrasePosition) {
+var playPhrase = function(section, phrasePosition, range) {
 	var startTime = ctx.currentTime;
 	var phraseRoot = settings["sections"][section]["rootValue"];
-	var phraseIndex = settings["sections"][section]["phrases"][phrasePosition];
-	phrase = phrases[phraseIndex];//settings["sections"][section][phrase][0];
+	if (range === "treble") {
+		var phraseIndex = settings["sections"][section]["phrases"][phrasePosition];
+		phrase = phrases[phraseIndex];
+	} else if (range === "bass") {
+		var phraseIndex = settings["sections"][section]["bassPhrases"][phrasePosition];		
+		phrase = bassPhrases[phraseIndex];
+		phraseRoot = phraseRoot - 24;
+	}
+	//settings["sections"][section][phrase][0];
 	for (var i = 0; i < phrase.notes.length; i++) {
 		var beatValue = (1 / (settings.tempo / 60)) * 4; 
 		var toneLookup = getNoteNumber(phrase.notes[i].tone, phraseRoot);
@@ -154,10 +186,11 @@ var getNextPhrase = function(section, phrasePosition) {
 var scheduler = function(section, phrasePosition) {
 	var duration = getDuration();
 	var nextPhraseObj = getNextPhrase(section, phrasePosition);
-	playPhrase(section, phrasePosition);
+	playPhrase(section, phrasePosition, "treble");
+	playPhrase(section, phrasePosition, "bass");
 	if (!stopFlag) {
 		setTimeout(function() { 
-		scheduler(nextPhraseObj["section"], nextPhraseObj["phrase"]); 
+		scheduler(nextPhraseObj["section"], nextPhraseObj["phrase"]);
 	}, duration);
 	}
 }
