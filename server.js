@@ -116,13 +116,18 @@ app.get('/test', function (req, res, next) {
 // SOCKETS
 io.sockets.on('connection', function (socket) {
   var assignedRole = null;
+  
   assignedRole = roles.assignRole(socket);
   
   console.log('assignedRole:' + JSON.stringify(assignedRole));
   console.log('socketId = ' + socket.id);
   roles.print();
   
-  console.log('socket connected!');   
+  socket.emit('init', {
+    state: state,
+    role: assignedRole
+  });
+  
   socket.emit('state.current', state);
   
   socket.on('state.change', function(data) {

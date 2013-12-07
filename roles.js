@@ -77,7 +77,7 @@ Roles.prototype.unassignRole = function(socketId) {
       }
     }
   }
-}
+};
 
 
 module.exports = Roles;
