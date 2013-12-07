@@ -1,5 +1,5 @@
 var settings = null;
-
+var role = null;
 
 // var settings = {
 // 	tempo: 120,
@@ -102,11 +102,13 @@ function makePhrase(notes) {
 	return new Phrase(tempPhrase);
 }
 
-var playPhrase = function(section, phrase) {
+var playPhrase = function(section, phrasePosition) {
 	console.log("playPhrase");
+	console.log("section " + section + " phrase " + phrase);
 	var startTime = ctx.currentTime;
-	var phraseRoot = settings["sections"][section][phrase][1];
-	phrase = settings["sections"][section][phrase][0];
+	var phraseRoot = settings["sections"][section][phrasePosition][1];
+	var phraseIndex = settings["sections"][section][phrasePosition][0];
+	phrase = phrases[phraseIndex];//settings["sections"][section][phrase][0];
 	for (var i = 0; i < phrase.notes.length; i++) {
 		var beatValue = (1 / (settings.tempo / 60)) * 4; 
 		var toneLookup = getNoteNumber(phrase.notes[i].tone, phraseRoot);
@@ -118,26 +120,26 @@ var playPhrase = function(section, phrase) {
 }
 
 var getDuration = function() {
-	var beatValue = var beatValue = (1 / (settings.tempo / 60));
+	var beatValue = (1 / (settings.tempo / 60));
 	var duration = (2 * beatValue) * 1000; //Convert to ms for setTimeout
 	return duration; 
 }
 
-var getNextPhrase = function(section, phrase) {
-	if (++phrase > 7) {
+var getNextPhrase = function(section, phrasePosition) {
+	if (++phrasePosition > 7) {
 		section = (section + 1) % 8;
-		phrase = 0;
+		phrasePosition = 0;
 	} 
 	return { 
 		"section": section,
-		"phrase": phrase 
+		"phrase": phrasePosition 
 	}
 }
 
-var scheduler = function(section, phrase) {
+var scheduler = function(section, phrasePosition) {
 	var duration = getDuration();
-	var nextPhraseObj = getNextPhrase(section, phrase);
-	playPhrase(phrase);
+	var nextPhraseObj = getNextPhrase(section, phrasePosition);
+	playPhrase(section, phrasePosition);
 	setTimeout(function() { 
 		scheduler(nextPhraseObj["section"], nextPhraseObj["phrase"]); 
 	}, duration);
@@ -151,17 +153,24 @@ var scheduler = function(section, phrase) {
 //playPhrase(0, 15, phrases[0]);
 //playPhrases(phrases);
 
-socket.on("state.current", function(data) {
-    settings = data; }
-	);
+socket.on("init", function(data) {
+    settings = data.state;
+    role = data.role;
+});
 
-scheduler(0, 0);
+socket.on("state.change", function(data) {
+	settings = data;
+});
 
-var playPhrases = function(phrases) {
-	var startTime = ctx.currentTime;
-	var beatValue = (1 / (settings.tempo / 60)) * 4;
-	for (var i = 0; i < phrases.length; i++) {
-		playPhrase(startTime, 15, phrases[i]);
-		startTime = startTime + (beatValue / 2);
-	}
-}
+setTimeout(function() {
+	scheduler(0, 0);
+}, 1000);
+
+// var playPhrases = function(phrases) {
+// 	var startTime = ctx.currentTime;
+// 	var beatValue = (1 / (settings.tempo / 60)) * 4;
+// 	for (var i = 0; i < phrases.length; i++) {
+// 		playPhrase(startTime, 15, phrases[i]);
+// 		startTime = startTime + (beatValue / 2);
+// 	}
+// }
