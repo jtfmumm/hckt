@@ -4,7 +4,7 @@ var express = require("express")
   , hbs = require("hbs")
   , _ = require("underscore");
 
-var phraseRange = 24;
+var phraseRange = 23;
 var sectionLength = 8;
 var phraseLength = 8;
 
