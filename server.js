@@ -4,8 +4,10 @@ var express = require("express")
   , hbs = require("hbs")
   , _ = require("underscore");
 
+var phraseRange = 24;
 var sectionLength = 8;
 var phraseLength = 8;
+
 var rolesLength = 8;
 
 var phraseRootValueStart = 30;
@@ -33,8 +35,8 @@ var setTempo = function(tempo) {
 }
 
 
-var generatePhrase = function(phraseLen) {
-  var randNum = randNum = Math.floor((Math.random() * phraseLen));
+var generatePhrase = function(phraseRange) {
+  var randNum = randNum = Math.floor((Math.random() * phraseRange));
   var rootNum = _.random(phraseRootValueStart, phraseRootValueEnd);
   return [randNum, rootNum];
 }
@@ -44,7 +46,7 @@ var generateSection = function() {
   var phrase = null;
   
   for(var i=0; i<phraseLength; i++){
-    phrase = generatePhrase(phraseLength);
+    phrase = generatePhrase(phraseRange);
     section.push(phrase);
   }
   
@@ -110,6 +112,12 @@ app.get('/', function (req, res, next) {
 });
 app.get('/test', function (req, res, next) {
   return res.render('test', {});
+});
+app.get('/master', function (req, res, next) {
+  return res.render('master', {});
+});
+app.get('/section', function (req, res, next) {
+  return res.render('section', {});
 });
 
 
