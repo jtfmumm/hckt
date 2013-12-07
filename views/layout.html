@@ -1,9 +1,12 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <link rel="stylesheet" type="text/css" href="/css/style.css">    
-    <script src="/socket.io/socket.io.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+		{{{block "additional_styles"}}}
+    
+		<script src="/socket.io/socket.io.js"></script>
     <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+		{{{block "additional_scripts"}}}
   </head>
   <body>
 		{{{body}}}

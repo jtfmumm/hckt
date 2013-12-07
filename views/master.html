@@ -1,0 +1,24 @@
+{{#extend "additional_styles"}}
+<link rel="stylesheet" type="text/css" href="//code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
+{{/extend}}
+
+{{#extend "additional_scripts"}}
+<script src="//code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+{{/extend}}
+
+
+<div id="tempo"></div>
+<script>
+	(function($) {
+		$( "#tempo" ).slider({
+			orientation: "vertical",
+      range: "min",
+      min: 0,
+      max: 100,
+      value: 60,
+			slide: function( event, ui ) {
+				$( "#amount" ).val( ui.value );
+			}
+		});
+	})(jQuery);
+</script>

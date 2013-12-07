@@ -111,6 +111,12 @@ app.get('/', function (req, res, next) {
 app.get('/test', function (req, res, next) {
   return res.render('test', {});
 });
+app.get('/master', function (req, res, next) {
+  return res.render('master', {});
+});
+app.get('/section', function (req, res, next) {
+  return res.render('section', {});
+});
 
 
 // SOCKETS
