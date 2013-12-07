@@ -115,19 +115,26 @@ app.get('/test', function (req, res, next) {
 
 // SOCKETS
 io.sockets.on('connection', function (socket) {
-  var assignedRole = null;
-  
-  assignedRole = roles.assignRole(socket);
+  var assignedRole = roles.assignRole(socket);
   
   console.log('assignedRole:' + JSON.stringify(assignedRole));
   console.log('socketId = ' + socket.id);
+  
   roles.print();
   
-  console.log('socket connected!');   
-  socket.emit('state.current', state);
+  socket.emit('init', {
+    state: state,
+    role: assignedRole
+  });
   
   socket.on('state.change', function(data) {
     socket.broadcast.emit('state.change', state);
+  });
+  
+  socket.on('disconnect', function() {
+    roles.unassignRole(this.id);
+    console.log('disconnect detected for id=' + this.id);
+    roles.print();
   });
 });
 

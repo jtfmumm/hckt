@@ -58,7 +58,26 @@ Roles.prototype.print = function(){
       console.log('section['+ i +']=' + this.sections[i].id);
     }
   }
-}
+};
+
+
+Roles.prototype.unassignRole = function(socketId) {
+  if (!this.isMasterUnassigned()) {
+    if(this.master.id === socketId) {
+      this.master = null;
+      return;
+    }
+  }
+  
+  for(var i=0, len=this.sections.length; i<len; i++) {
+    if(!this.isSectionUnassigned(i)) {
+      if(this.sections[i].id === socketId) {
+        this.sections[i] = null;
+        return;
+      }
+    }
+  }
+};
 
 
 module.exports = Roles;
