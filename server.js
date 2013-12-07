@@ -4,8 +4,12 @@ var express = require("express")
   , hbs = require("hbs")
   , _ = require("underscore");
 
+var sectionLength = 8;
+var phraseLength = 8;
+var rolesLength = 8;
+
 var Roles = require("./roles.js");
-var roles = new Roles(8);
+var roles = new Roles(rolesLength);
 
 var app = express();
 var server = http.createServer(app);
@@ -26,11 +30,19 @@ var setTempo = function(tempo) {
 };
 
 var generateSection = function() {
-  return _.range(8);
+  var section = [];
+  var randNum = null;
+  
+  for(var i=0; i<phraseLength; i++){
+    randNum = Math.floor((Math.random() * phraseLength));
+    section.push(randNum);
+  }
+  
+  return section;
 };
 
 var generateSections = function() {
-  for(var i=0, len=8; i<len; i++) {
+  for(var i=0, len=sectionLength; i<len; i++) {
     state.sections.push(generateSection());
   };
 };
