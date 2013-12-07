@@ -71,7 +71,7 @@ var generateSection = function() {
   }
   
   return {
-    root: generateRootValue(),
+    rootValue: generateRootValue(),
     phrases: phrases
   };
 };
