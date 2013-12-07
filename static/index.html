@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">    
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+  </head>
+  <body>
+    <div id="wrapper"></div>
+    <script>
+      var state = {};
+      var socket = io.connect('http://0.0.0.0');
+      
+      socket.on('state.current', function (data) {
+        state = data;
+        console.log("received state");
+      });
+
+      socket.on('state.change', function(data) {
+        state = data;
+        console.log("received state change");
+      });
+    </script>
+  </body>
+</html>

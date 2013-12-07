@@ -1,4 +1,5 @@
-music-hackathon
+HCKT
 ===============
+Hexacontakaitetratet
 
-Monthly Music Hackathon 12.7.2013
+Project from Monthly Music Hackathon 12.7.2013
