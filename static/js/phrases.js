@@ -1,6 +1,8 @@
 var settings = null;
 var role = null;
 
+var stopFlag = false;
+
 // var settings = {
 // 	tempo: 120,
 // 	scale: "majorScale"
@@ -11,7 +13,7 @@ var role = null;
 // }
 
 var scales = {
-	"majorScale": [0, 2, 4, 5, 7, 9, 11, 12]
+	"majorScale": [0, 2, 4, 5, 7, 9, 11, 12, 14, 16, 17, 19]
 }
 
 var getNoteNumber = function(scaleDegree, rootValue) {
@@ -52,7 +54,6 @@ var _tonesTable = generateTones();
 //Phrase representation: tone: -4 - 12, schedule: 0 - 7}]
 
 var playOsc = function(freq, dur, startTime) {
-	console.log("Hi");
 	osc = ctx.createOscillator();
 	osc.frequency.value = freq;
 	osc.type = "square";
@@ -63,25 +64,36 @@ var playOsc = function(freq, dur, startTime) {
 
 //Representing relative notes as scale degrees 1-7
 var phrases = [
-	makePhrase([[1, 2]]),
 	makePhrase([[5, 4], [1, 4]]),
 	makePhrase([[1, 8], [5, 8], [8, 8], [5, 8]]),
 	makePhrase([[1, 8], [3, 8], [5, 8], [3, 8]]),
 	makePhrase([[1, 8], [2, 8], [3, 8], [5, 8]]),
+
+	makePhrase([[1, 8], [2, 8], [3, 8], [4, 8]]),
+	makePhrase([[5, 8], [6, 8], [7, 8], [8, 8]]),
+	makePhrase([[8, 8], [7, 8], [6, 8], [5, 8]]),
+	makePhrase([[4, 8], [3, 8], [2, 8], [1, 8]]),
+
+	makePhrase([[1, 16], [2, 16], [3, 16], [4, 16], [5, 16], [4, 16], [3, 16], [4, 16]]),
+	makePhrase([[1, 16], [-2, 16], [-3, 16], [-2, 16], [-3, 16], [-4, 16], [5, 16], [3, 16]]),
+	makePhrase([[5, 4], [8, 16], [7, 16], [6, 16], [3, 16]]),
+	makePhrase([[5, 4], [8, 16], [6, 16], [7, 16], [5, 16]]),
+
+	makePhrase([[5, 8], [3, 16], [6, 16], [4, 8], [2, 16], [7, 16]]),
+	makePhrase([[8, 16], [1, 16], [7, 16], [2, 16], [6, 16], [3, 16], [5, 16], [4, 16]]),
+	makePhrase([[4, 8], [5, 16], [6, 16], [2, 16], [3, 16], [1, 8]]),
+	makePhrase([[4, 8], [3, 16], [2, 16], [4, 8], [3, 16], [2, 16]]),
+
+	makePhrase([[3, 16], [5, 16], [8, 16], [10, 16], [9, 16], [8, 16], [7, 16], [6, 16]]),
+	makePhrase([[3, 16], [-3, 8], [2, 16], [-4, 16], [2, 8], [-3, 16]]),
 	makePhrase([[1, 8], [3, 16], [-4, 16], [5, 16], [-3, 16], [6, 16], [-2, 16]]),
 	makePhrase([[1, 8], [3, 16], [-4, 16], [5, 16], [-3, 16], [6, 16], [-2, 16]]),
-	makePhrase([[1, 8], [3, 16], [-4, 16], [5, 16], [-3, 16], [6, 16], [-2, 16]]),
-	makePhrase([[1, 8], [3, 16], [-4, 16], [5, 16], [-3, 16], [6, 16], [-2, 16]]),
-	makePhrase([[1, 8], [3, 16], [-4, 16], [5, 16], [-3, 16], [6, 16], [-2, 16]]),
-	makePhrase([[1, 8], [3, 16], [-4, 16], [5, 16], [-3, 16], [6, 16], [-2, 16]]),
-	makePhrase([[1, 8], [3, 16], [-4, 16], [5, 16], [-3, 16], [6, 16], [-2, 16]]),
-	makePhrase([[1, 8], [3, 16], [-4, 16], [5, 16], [-3, 16], [6, 16], [-2, 16]]),
-	makePhrase([[1, 8], [3, 16], [-4, 16], [5, 16], [-3, 16], [6, 16], [-2, 16]]),
-	makePhrase([[1, 8], [3, 16], [-4, 16], [5, 16], [-3, 16], [6, 16], [-2, 16]]),
-	makePhrase([[1, 8], [3, 16], [-4, 16], [5, 16], [-3, 16], [6, 16], [-2, 16]])
-	//makePhrase([[1, 8], [3, 8], [5, 8], [3, 8]]),
-	//makePhrase([[1, 8], [3, 8], [5, 8], [3, 8]]),
-	//makePhrase([[1, 8], [3, 8], [5, 8], [3, 8]])
+
+	makePhrase([[1, 16], [-2, 16], [1, 16], [-2, 16], [1, 16], [-2, 16], [1, 16], [-2, 16]]),
+	makePhrase([[6, 16], [3, 16], [6, 16], [3, 16], [5, 16], [2, 16], [5, 16], [2, 16]]),
+
+	makePhrase([[2, 8], [5, 8], [-3, 4]]),
+	makePhrase([[2, 8], [5, 8], [1, 4]]),
 ]
 
 function Note(tone, noteValue) {
@@ -103,8 +115,6 @@ function makePhrase(notes) {
 }
 
 var playPhrase = function(section, phrasePosition) {
-	console.log("playPhrase");
-	console.log("section " + section + " phrase " + phrase);
 	var startTime = ctx.currentTime;
 	var phraseRoot = settings["sections"][section][phrasePosition][1];
 	var phraseIndex = settings["sections"][section][phrasePosition][0];
@@ -140,18 +150,12 @@ var scheduler = function(section, phrasePosition) {
 	var duration = getDuration();
 	var nextPhraseObj = getNextPhrase(section, phrasePosition);
 	playPhrase(section, phrasePosition);
-	setTimeout(function() { 
+	if (!stopFlag) {
+		setTimeout(function() { 
 		scheduler(nextPhraseObj["section"], nextPhraseObj["phrase"]); 
 	}, duration);
+	}
 }
-
-//playPhrase schedules next phrase
-
-
-//playPhrase(0, 15, aPhrase);
-
-//playPhrase(0, 15, phrases[0]);
-//playPhrases(phrases);
 
 socket.on("init", function(data) {
     settings = data.state;
@@ -166,11 +170,4 @@ setTimeout(function() {
 	scheduler(0, 0);
 }, 1000);
 
-// var playPhrases = function(phrases) {
-// 	var startTime = ctx.currentTime;
-// 	var beatValue = (1 / (settings.tempo / 60)) * 4;
-// 	for (var i = 0; i < phrases.length; i++) {
-// 		playPhrase(startTime, 15, phrases[i]);
-// 		startTime = startTime + (beatValue / 2);
-// 	}
-// }
+var killSong = function() { stopFlag = true; }
