@@ -2,16 +2,18 @@
   "name": "hckt",
   "version": "0.0.0",
   "description": "Hexa-conta-kai-tetra-tet (try saying that 10x)",
+  "private": true,
   "repository": {
     "type": "git",
     "url": "https://github.com/paulvstheworld/hckt"
   },
   "dependencies": {
+    "hbs": "2.4.0",
     "express": "3.4.6",
     "socket.io": "0.9.16"
   },
   "engines": {
-    "node": ">=0.8"
+    "node": ">=0.10.20"
   },
   "main": "./server.js"
 }
