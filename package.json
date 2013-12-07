@@ -10,7 +10,8 @@
   "dependencies": {
     "hbs": "2.4.0",
     "express": "3.4.6",
-    "socket.io": "0.9.16"
+    "socket.io": "0.9.16",
+    "underscore": "1.5.2"
   },
   "engines": {
     "node": ">=0.10.20"

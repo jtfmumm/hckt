@@ -1,6 +1,23 @@
 var utils = {};
 utils.socket = null;
 
+utils.stateChangeHandlers = [];
+utils.stateReceivedHandlers = [];
+
+
+
+utils.addStateChangeHandler = function(cb) {
+  utils.stateChangeHandlers.push(cb);
+};
+
+utils.addStateReceivedHandlers = function(cb) {
+  utils.stateReceivedHandlers.push(cb);
+};
+
+
+
+
+
 utils.setSocket = function(socket) {
   utils.socket = socket;
 };

@@ -1,7 +1,8 @@
 var express = require("express")
   , http = require("http")
   , socketio = require("socket.io")
-  , hbs = require("hbs");
+  , hbs = require("hbs")
+  , _ = require("underscore");
 
 var app = express();
 var server = http.createServer(app);
@@ -10,8 +11,35 @@ var io = socketio.listen(server);
 // HBS TEMPLATE VARIABLE
 var blocks = {};
 
+
+
+//STATE UTILS
+var setTempo = function(tempo) {
+  state.tempo = tempo;
+};
+
+var generateSection = function() {
+  return _.range(8);
+};
+
+var generateSections = function() {
+  for(var i=0, len=8; i<len; i++) {
+    state.sections.push(generateSection());
+  };
+};
+
+
 // GLOBAL STATE
+var availablePhrases = _.range(15);
+
 var state = {};
+state.tempo = null;
+state.sections = [];
+
+setTempo(120);
+generateSections();
+
+console.log(JSON.stringify(state));
 
 
 // CONFIG
@@ -70,5 +98,4 @@ io.sockets.on('connection', function (socket) {
 
 
 server.listen(8080, '0.0.0.0');
-
 console.log("starting server!");
