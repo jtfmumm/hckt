@@ -127,8 +127,6 @@ io.sockets.on('connection', function (socket) {
     role: assignedRole
   });
   
-  socket.emit('state.current', state);
-  
   socket.on('state.change', function(data) {
     socket.broadcast.emit('state.change', state);
   });
