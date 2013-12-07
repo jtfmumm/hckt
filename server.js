@@ -116,7 +116,6 @@ app.get('/test', function (req, res, next) {
 // SOCKETS
 io.sockets.on('connection', function (socket) {
   var assignedRole = null;
-  
   assignedRole = roles.assignRole(socket);
   
   console.log('assignedRole:' + JSON.stringify(assignedRole));
@@ -128,6 +127,12 @@ io.sockets.on('connection', function (socket) {
   
   socket.on('state.change', function(data) {
     socket.broadcast.emit('state.change', state);
+  });
+  
+  socket.on('disconnect', function() {
+    roles.unassignRole(this.id);
+    console.log('disconnect detected for id=' + this.id);
+    roles.print();
   });
 });
 
