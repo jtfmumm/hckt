@@ -115,12 +115,11 @@ app.get('/test', function (req, res, next) {
 
 // SOCKETS
 io.sockets.on('connection', function (socket) {
-  var assignedRole = null;
-  
-  assignedRole = roles.assignRole(socket);
+  var assignedRole = roles.assignRole(socket);
   
   console.log('assignedRole:' + JSON.stringify(assignedRole));
   console.log('socketId = ' + socket.id);
+  
   roles.print();
   
   socket.emit('init', {
