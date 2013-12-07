@@ -5,7 +5,8 @@ var express = require("express")
   , _ = require("underscore");
 
 var phraseRange = 23;
-var sectionLength = 8;
+var basePhraseRange = 15;
+var sectionLength = 4;
 var phraseLength = 8;
 
 var rolesLength = 8;
@@ -13,6 +14,7 @@ var rolesLength = 8;
 
 var Roles = require("./roles.js");
 var roles = new Roles(rolesLength);
+
 
 var app = express();
 var server = http.createServer(app);
@@ -63,15 +65,20 @@ var generatePhrase = function(range) {
 
 var generateSection = function() {
   var phrases = [];
+  var basePhrases = [];
   var phrase = null;
   
   for(var i=0; i<phraseLength; i++){
     phrase = generatePhrase(phraseRange);
     phrases.push(phrase);
+    
+    basePhrase = generatePhrase(basePhraseRange);
+    basePhrases.push(basePhrase);
   }
   
   return {
     rootValue: generateRootValue(),
+    basePhrases: basePhrases,
     phrases: phrases
   };
 };
