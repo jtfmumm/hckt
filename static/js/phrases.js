@@ -6,9 +6,11 @@ var stopFlag = false;
 // var settings = {
 // 	tempo: 120,
 // 	scale: "majorScale"
-//  density: 100,
+//  trebleDensity: 80,
+//  bassDensity: 
 //  sections: [
-		// {"rootValue": 
+		// {"systemRoot":
+		//	"localRoot": 
 		//	"phrases": [...]}, phraseIndex values 0-23
 		//	"bassPhrases": [...]}, bassPhraseIndex values 0-15 
 		// ...
@@ -16,12 +18,26 @@ var stopFlag = false;
 // }
 
 var scales = {
-	"majorScale": [0, 2, 4, 5, 7, 9, 11, 12, 14, 16, 17, 19]
+	"majorScale": [0, 2, 4, 5, 7, 9, 11, 12, 14, 16, 17, 19],
+	"minorScale": [0, 2, 3, 5, 7, 8, 10, 12, 14, 15, 17, 19]
 }
 
-var getNoteNumber = function(scaleDegree, rootValue) {
+var getNoteNumber = function(scaleDegree, localRoot) {
 	var noteNumber, newDegree = null;
-	var curScale = scales[settings.scale];
+	//var curScale = scales[settings.scale];
+
+	switch localRoot {
+		case 1: if ((Math.random() * 100) < 15) {
+			curScale = "minorScale";
+		} else { curScale = "majorScale"; }	
+		case 5: curScale = "majorScale";
+		case 4: if ((Math.random() * 100) < 10) {
+			curScale = "minorScale";
+		} else { curScale = "majorScale"; }
+		case 3: curScale = "majorScale";
+		case 6: curScale = "minorScale";
+		case 2: curScale = "minorScale";
+	}
 
 	//Check for invalid input
 	if (scaleDegree === 0 || scaleDegree === -1) {
@@ -30,10 +46,10 @@ var getNoteNumber = function(scaleDegree, rootValue) {
 
 	if (scaleDegree > 0) {
 		newDegree = scaleDegree - 1;
-		noteNumber = rootValue + curScale[newDegree];
+		noteNumber = settings.systemRoot + curScale[newDegree];
 	} else {
 		newDegree = curScale.length + (scaleDegree - 1);
-		noteNumber = (rootValue - 12) + curScale[newDegree];
+		noteNumber = (settings.systemRoot - 12) + curScale[newDegree];
 	}
 	return noteNumber;
 }
@@ -143,7 +159,8 @@ function makePhrase(notes) {
 
 var playPhrase = function(section, phrasePosition, range) {
 	var startTime = ctx.currentTime;
-	var phraseRoot = settings["sections"][section]["rootValue"];
+	var density = settings.density;
+	var phraseRoot = settings["sections"][section]["localRoot"];
 	if (range === "treble") {
 		var phraseIndex = settings["sections"][section]["phrases"][phrasePosition];
 		phrase = phrases[phraseIndex];
@@ -151,6 +168,8 @@ var playPhrase = function(section, phrasePosition, range) {
 		var phraseIndex = settings["sections"][section]["bassPhrases"][phrasePosition];		
 		phrase = bassPhrases[phraseIndex];
 		phraseRoot = phraseRoot - 24;
+		bassTransform = (100 - density) / 2; 
+		density = density + bassTransform; 
 	}
 	//settings["sections"][section][phrase][0];
 	for (var i = 0; i < phrase.notes.length; i++) {
@@ -174,7 +193,7 @@ var getDuration = function() {
 
 var getNextPhrase = function(section, phrasePosition) {
 	if (++phrasePosition > 7) {
-		section = (section + 1) % 8;
+		section = (section + 1) % 4;
 		phrasePosition = 0;
 	} 
 	return { 
