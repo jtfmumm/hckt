@@ -11,10 +11,8 @@ var phraseLength = 8;
 
 var rolesLength = 8;
 
-
 var Roles = require("./roles.js");
 var roles = new Roles(rolesLength);
-
 
 var app = express();
 var server = http.createServer(app);
@@ -38,25 +36,35 @@ var setTempo = function(tempo) {
   state.tempo = tempo;
 }
 
+var setGlobalRoot = function(globalRoot) {
+  state.globalRoot = globalRoot;
+}
 
-var generateRootValue = function(phraseRange) {
+
+var generateLocalRootValue = function() {
   var rand = Math.floor(Math.random() * 100);
-  var phrase = null;
+  var localRoot = null;
   
-  if(rand < 50) {
-    return 30;
+  if(rand < 45) {
+    return 1;
   }
-  else if (rand < 80) {
-    return 37;
+  else if (rand < (45 + 19)) {
+    return 5;
   }
-  else if (rand < 95) {
-    return 35;
+  else if(rand < (45 + 19 + 15)) {
+    return 4;
+  }
+  else if(rand < (45 + 19 + 15 + 7)) {
+    return 3;
+  }
+  else if(rand < (45 + 19 + 15 + 7 + 7)) {
+    return 6;
   }
   else {
-    return 34;
+    return 2;
   }
   
-  return phrase;
+  return localRoot;
 }
 
 var generatePhrase = function(range) {
@@ -77,7 +85,7 @@ var generateSection = function() {
   }
   
   return {
-    rootValue: generateRootValue(),
+    localRootValue: generateLocalRootValue(),
     bassPhrases: bassPhrases,
     phrases: phrases
   };
@@ -98,6 +106,7 @@ state.sections = [];
 
 setDensity(80);
 setTempo(120);
+setGlobalRoot(30);
 setScale('majorScale');
 generateSections();
 
