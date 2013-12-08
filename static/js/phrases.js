@@ -3,14 +3,15 @@ var role = null;
 
 var stopFlag = false;
 
+
 // var settings = {
 // 	tempo: 120,
 // 	scale: "majorScale"
 //  trebleDensity: 80,
 //  bassDensity: 
 //  sections: [
-		// {"systemRoot":
-		//	"localRoot": 
+		// {"globalRoot":
+		//	"localRootValue": 
 		//	"phrases": [...]}, phraseIndex values 0-23
 		//	"bassPhrases": [...]}, bassPhraseIndex values 0-15 
 		// ...
@@ -22,22 +23,30 @@ var scales = {
 	"minorScale": [0, 2, 3, 5, 7, 8, 10, 12, 14, 15, 17, 19]
 }
 
-var getNoteNumber = function(scaleDegree, localRoot) {
+var getNoteNumber = function(scaleDegree, localRootValue, range) {
 	var noteNumber, newDegree = null;
+	var scaleName, curScale;
 	//var curScale = scales[settings.scale];
 
-	switch localRoot {
-		case 1: if ((Math.random() * 100) < 15) {
-			curScale = "minorScale";
-		} else { curScale = "majorScale"; }	
-		case 5: curScale = "majorScale";
-		case 4: if ((Math.random() * 100) < 10) {
-			curScale = "minorScale";
-		} else { curScale = "majorScale"; }
-		case 3: curScale = "majorScale";
-		case 6: curScale = "minorScale";
-		case 2: curScale = "minorScale";
+	if (localRootValue === 1) { 
+		if ((Math.random() * 100) < 15) {
+			scaleName = "minorScale";	
+		} else { scaleName = "majorScale"; } 
 	}
+	if (localRootValue === 5) { scaleName = "majorScale"; }
+	if (localRootValue === 4) {  
+		if ((Math.random() * 100) < 10) {
+			scaleName = "minorScale";	
+		} else { scaleName = "majorScale"; } 
+	}
+	if (localRootValue === 3) { scaleName = "minorScale"; }
+	if (localRootValue === 6) { scaleName = "minorScale"; }
+	if (localRootValue === 2) { scaleName = "minorScale"; }
+
+	console.log(scaleName);
+	//console.log(localRootValue);
+	curScale = scales[scaleName];
+	//console.log(scaleName);
 
 	//Check for invalid input
 	if (scaleDegree === 0 || scaleDegree === -1) {
@@ -46,11 +55,15 @@ var getNoteNumber = function(scaleDegree, localRoot) {
 
 	if (scaleDegree > 0) {
 		newDegree = scaleDegree - 1;
-		noteNumber = settings.systemRoot + curScale[newDegree];
+		noteNumber = (settings.globalRoot + localRootValue) + curScale[newDegree];
 	} else {
 		newDegree = curScale.length + (scaleDegree - 1);
-		noteNumber = (settings.systemRoot - 12) + curScale[newDegree];
+		noteNumber = (settings.globalRoot - 12 + localRootValue) + curScale[newDegree];
 	}
+	if (range === "bass") { noteNumber = noteNumber - 24; }
+	//console.log(newDegree);
+	console.log(settings.globalRoot);
+	console.log(noteNumber);
 	return noteNumber;
 }
 
@@ -160,21 +173,21 @@ function makePhrase(notes) {
 var playPhrase = function(section, phrasePosition, range) {
 	var startTime = ctx.currentTime;
 	var density = settings.density;
-	var phraseRoot = settings["sections"][section]["localRoot"];
+	var phraseRoot = settings["sections"][section]["localRootValue"];
+	console.log(phraseRoot);
 	if (range === "treble") {
 		var phraseIndex = settings["sections"][section]["phrases"][phrasePosition];
 		phrase = phrases[phraseIndex];
 	} else if (range === "bass") {
 		var phraseIndex = settings["sections"][section]["bassPhrases"][phrasePosition];		
 		phrase = bassPhrases[phraseIndex];
-		phraseRoot = phraseRoot - 24;
 		bassTransform = (100 - density) / 2; 
 		density = density + bassTransform; 
 	}
 	//settings["sections"][section][phrase][0];
 	for (var i = 0; i < phrase.notes.length; i++) {
 		var beatValue = (1 / (settings.tempo / 60)) * 4; 
-		var toneLookup = getNoteNumber(phrase.notes[i].tone, phraseRoot);
+		var toneLookup = getNoteNumber(phrase.notes[i].tone, phraseRoot, range);
 		var freq = _tonesTable[toneLookup];
     	var duration = beatValue / phrase.notes[i].noteValue;
     	var roll = (Math.random() * 100);
