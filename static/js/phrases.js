@@ -28,18 +28,10 @@ var getNoteNumber = function(scaleDegree, localRootValue, range) {
 	var scaleName, curScale;
 	//var curScale = scales[settings.scale];
 
-	if (localRootValue === 1) { 
-		if ((Math.random() * 100) < 15) {
-			scaleName = "minorScale";	
-		} else { scaleName = "majorScale"; } 
-	}
+	if (localRootValue === 1) { scaleName = "majorScale"; } 	
 	if (localRootValue === 5) { scaleName = "majorScale"; }
-	if (localRootValue === 4) {  
-		if ((Math.random() * 100) < 10) {
-			scaleName = "minorScale";	
-		} else { scaleName = "majorScale"; } 
-	}
-	if (localRootValue === 3) { scaleName = "minorScale"; }
+	if (localRootValue === 4) { scaleName = "majorScale"; } 	
+	if (localRootValue === 3) { scaleName = "majorScale"; }
 	if (localRootValue === 6) { scaleName = "minorScale"; }
 	if (localRootValue === 2) { scaleName = "minorScale"; }
 

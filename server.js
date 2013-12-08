@@ -59,19 +59,19 @@ var generateLocalRootValue = function() {
   }
   
   
-  if(rand < 45) {
+  if(rand < 44) {
     return 1;
   }
-  else if (rand < (45 + 19)) {
+  else if (rand < (44 + 19)) {
     return 5;
   }
-  else if(rand < (45 + 19 + 15)) {
+  else if(rand < (44 + 19 + 15)) {
     return 4;
   }
-  else if(rand < (45 + 19 + 15 + 7)) {
+  else if(rand < (44 + 19 + 15 + 7)) {
     return 3;
   }
-  else if(rand < (45 + 19 + 15 + 7 + 7)) {
+  else if(rand < (44 + 19 + 15 + 7 + 7)) {
     return 6;
   }
   else {
@@ -118,7 +118,7 @@ var state = {};
 state.tempo = null;
 state.sections = [];
 
-setDensity(80);
+setDensity(85);
 setTempo(120);
 setGlobalRoot(30);
 setScale('majorScale');
