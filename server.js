@@ -45,6 +45,20 @@ var generateLocalRootValue = function() {
   var rand = Math.floor(Math.random() * 100);
   var localRoot = null;
   
+  if(rand < 50) {
+    return 1;
+  }
+  else if (rand < (50 + 20)) {
+    return 5;
+  }
+  else if(rand < (50 + 20 + 20)) {
+    return 4;
+  }
+  else {
+    return 3;
+  }
+  
+  
   if(rand < 45) {
     return 1;
   }
