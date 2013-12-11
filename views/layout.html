@@ -2,19 +2,18 @@
 <html>
   <head>
     <link rel="stylesheet" type="text/css" href="/css/style.css">
-		{{{block "additional_styles"}}}
-    
-		<script src="/socket.io/socket.io.js"></script>
+    {{{block "additional_styles"}}}
+    <script src="/socket.io/socket.io.js"></script>
     <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
-		{{{block "additional_scripts"}}}
+    {{{block "additional_scripts"}}}
   </head>
-  <body>
-		{{{body}}}
-		<script>
-			var state = {};
-			var socket = io.connect('http://0.0.0.0');	
-    </script>
 
-		{{{block "deferred_scripts"}}}
+  <body>
+    {{{body}}}
+    <script>
+      var state = {};
+      var socket = io.connect('http://0.0.0.0');	
+    </script>
+    {{{block "deferred_scripts"}}}
   </body>
 </html>
