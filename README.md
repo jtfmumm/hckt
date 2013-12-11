@@ -11,11 +11,11 @@ These sequencers are organized in a hierarchical fashion.  At the lowest level, 
 "sections" of the song composed of "phrases" which can be selected by the faders.  The phrases can
 be algorithmically generated or can consist of precomposed material.  
 
-At the middle level, there are sequencers whose faders are each connected to a single section below.  These faders control
-parameters such as the local root tone and tone density of the corresponding section.  
+At the middle level, there are sequencers whose faders are each connected to a single section below.
+These faders control parameters such as the local root tone and tone density of the corresponding section.  
 
-At the highest level is the "conductor", who chooses (and alters in real-time) the tempo, base key signature, dynamics,
-and other global parameters.
+At the highest level is the "conductor", who chooses (and alters in real-time) the tempo, base key 
+signature, dynamics, and other global parameters.
 
 HCKT began as a project for the Monthly Music Hackathon in NYC 12.7.2013.
  
@@ -42,7 +42,7 @@ ROLES
 
 ### Want this to change easily
 * Scale Degree Adventurousness
-  * [0, 15]
+  * [0, 15] x 8
   * start randomized
   * For each fader there is a button which is a lock
     * randomly chooses scale degree on each fader iteration
@@ -82,3 +82,20 @@ ROLES
   * BASS
     * [0, 15]
   * start randomized
+
+
+## PAYLOAD
+{
+  globalRoot: num,
+  tempo: num,
+  scale: num,
+  adventurousness: [],
+  leadEnvelope: {
+    attack: num,
+    sustain: num             
+  },
+  bassEnvelope: {
+    attack: num,
+    sustain: num
+  }
+}
