@@ -37,66 +37,6 @@ var SCALES = {
   "minorScale": [0, 2, 3, 5, 7, 8, 10, 12, 14, 15, 17, 19]
 };
 
-var ctx = new webkitAudioContext();
-
-
-function Note(tone, noteValue) {
-  this.tone = tone;
-  this.noteValue = noteValue;
-};
-
-
-function Phrase(notes) {
-  this.notes = notes;
-};
-
-
-var getScaleType = function(localRootValue) {
-  if (localRootValue === 2 || 
-      localRootValue === 6) {
-    return 'minorScale';
-  }
-
-  return 'majorScale';
-};
-
-// TODO @paul -- this function needs to be broken up/explained
-var getNoteNumber = function(scaleDegree, localRootValue, range) {
-  var noteNumber, newDegree = null;
-  var scaleName = getScaleType(localRootValue);
-  var curScale = SCALES[scaleName];
-
-  //Check for invalid input
-  if (scaleDegree === 0 || scaleDegree === -1) {
-    scaleDegree = 1;  //With invalid input, just play root tone
-  } 
-  else if (scaleDegree > 0) {
-    newDegree = scaleDegree - 1;
-    noteNumber = (settings.globalRoot + localRootValue) + curScale[newDegree];
-  } 
-  else {
-    newDegree = curScale.length + (scaleDegree - 1);
-    noteNumber = (settings.globalRoot - 12 + localRootValue) + curScale[newDegree];
-  }
-
-  if (range === "bass") { 
-    noteNumber = noteNumber - 24; 
-  }
-
-  return noteNumber;
-};
-
-
-var getPhrase = function(notes) {
-  var tempPhrase = [];
-  var note = null;
-  for (var i = 0; i < notes.length; i++) {
-    note = new Note(notes[i][0], notes[i][1]);
-    tempPhrase.push(note);
-  }
-  return new Phrase(tempPhrase);
-};
-
 
 //Phrase representation: tone: -4 - 12, schedule: 0 - 7}]
 //Representing relative notes as scale degrees 1-7
@@ -156,6 +96,68 @@ var bassPhrases = [
   [[5, 8], [4, 8], [3, 8], [2, 8]],
   [[1, 8], [1, 16], [2, 16], [3, 16], [5, 16], [6, 16], [8, 16]] //sunshine
 ];
+
+
+// Audio context
+var ctx = new webkitAudioContext();
+
+
+function Note(tone, noteValue) {
+  this.tone = tone;
+  this.noteValue = noteValue;
+};
+
+
+function Phrase(notes) {
+  this.notes = notes;
+};
+
+
+var getScaleType = function(localRootValue) {
+  if (localRootValue === 2 || 
+      localRootValue === 6) {
+    return 'minorScale';
+  }
+
+  return 'majorScale';
+};
+
+// TODO @paul -- this function needs to be broken up/explained
+var getNoteNumber = function(scaleDegree, localRootValue, range) {
+  var noteNumber, newDegree = null;
+  var scaleName = getScaleType(localRootValue);
+  var curScale = SCALES[scaleName];
+
+  //Check for invalid input
+  if (scaleDegree === 0 || scaleDegree === -1) {
+    scaleDegree = 1;  //With invalid input, just play root tone
+  } 
+  else if (scaleDegree > 0) {
+    newDegree = scaleDegree - 1;
+    noteNumber = (settings.globalRoot + localRootValue) + curScale[newDegree];
+  } 
+  else {
+    newDegree = curScale.length + (scaleDegree - 1);
+    noteNumber = (settings.globalRoot - 12 + localRootValue) + curScale[newDegree];
+  }
+
+  if (range === "bass") { 
+    noteNumber = noteNumber - 24; 
+  }
+
+  return noteNumber;
+};
+
+
+var getPhrase = function(notes) {
+  var tempPhrase = [];
+  var note = null;
+  for (var i = 0; i < notes.length; i++) {
+    note = new Note(notes[i][0], notes[i][1]);
+    tempPhrase.push(note);
+  }
+  return new Phrase(tempPhrase);
+};
 
 
 //Note numbering: A1 = 0, A#1 = 1, B1 = 2, C2 = 3....
