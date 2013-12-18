@@ -25,8 +25,6 @@ var settings = {
 */
 
 
-
-
 var SEMI_TONE = Math.pow(2, 1/12);
 var _stopFlag = false;
 
@@ -62,7 +60,7 @@ var getScaleType = function(localRootValue) {
   return 'majorScale';
 };
 
-
+// TODO @paul -- this function needs to be broken up/explained
 var getNoteNumber = function(scaleDegree, localRootValue, range) {
   var noteNumber, newDegree = null;
   var scaleName = getScaleType(localRootValue);
@@ -100,6 +98,7 @@ var getPhrase = function(notes) {
 };
 
 
+//Phrase representation: tone: -4 - 12, schedule: 0 - 7}]
 //Representing relative notes as scale degrees 1-7
 var phrases = [
   [[5, 4], [1, 4]],
@@ -174,8 +173,6 @@ var getTonesTable = function() {
 };
 
 
-//Phrase representation: tone: -4 - 12, schedule: 0 - 7}]
-
 var playTone = function(freq, dur, startTime) {
   osc = ctx.createOscillator();
   osc.frequency.value = freq;
@@ -186,6 +183,7 @@ var playTone = function(freq, dur, startTime) {
 };
 
 
+// TODO @paul -- this function needs to be broken up
 var playPhrase = function(section, phrasePosition, range) {
   var startTime = ctx.currentTime;
   var density = settings.density;
@@ -219,6 +217,7 @@ var playPhrase = function(section, phrasePosition, range) {
     startTime = startTime + duration;
   }
 };
+
 
 var getDuration = function() {
   var beatValue = (1 / (settings.tempo / 60));
