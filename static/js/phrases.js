@@ -186,21 +186,28 @@ var playOsc = function(freq, dur, startTime, attack, release) {
 var playPhrase = function(section, phrasePosition, range) {
   var attack, release;
   var startTime = ctx.currentTime;
-  var density = settings.tops[0].density;
-  var section = settings["sections"][section]
+
+  //Mid players control 2 sections each
+  var midPlayer = section % 2;
+  //Each density setting corresponds to 2 phrases
+  //and corresponds to an index in the appropriate midPlayer's settings array 
+  var densitySetting = (mid + 1) * Math.floor(phrasePosition / 2);  
+  var density = settings.mids[midPlayer]["nodeDensity"][densitySetting];
+  
+  var section = settings.bottoms[section];
   var phraseRoot = LOCAL_ROOT_VALUES[section];
   var phraseIndex = 0;
   var beatValue, toneLookup, freq, duration, roll = null;
   var tonesTable = getTonesTable();
 
   if (range === "lead") {
-    phraseIndex = section["phrases"][phrasePosition];
+    phraseIndex = section.lead[phrasePosition];
     phrase = getPhrase(phrases[phraseIndex]);
     attack = settings.tops[0].leadEnvelope.attack;
     release = settings.tops[0].leadEnvelope.release;
   } 
   else if (range === "bass") {
-    phraseIndex = section["bassPhrases"][phrasePosition];		
+    phraseIndex = section.bass[phrasePosition];		
     phrase = getPhrase(bassPhrases[phraseIndex]);
     bassTransform = (100 - density) / 2; 
     density = density + bassTransform; 
