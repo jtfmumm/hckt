@@ -7,35 +7,19 @@
 }
 */
 
-/*
-var settings = {
-  tempo: 120,
-  scale: "majorScale"
-  trebleDensity: 80,
-  bassDensity: 
-  sections: [
-    {"globalRoot":
-     "localRootValue": 
-     "phrases": [...]}, phraseIndex values 0-23
-     "bassPhrases": [...]}, bassPhraseIndex values 0-15 
-    ...
-    }, ...]
-}
-
-*/
-
-
+var DEFAULT_AMP = 0.4;
 var SEMI_TONE = Math.pow(2, 1/12);
+var SCALES = {
+  "majorScale": [0, 2, 4, 5, 7, 9, 11, 12, 14, 16, 17, 19],
+  "minorScale": [0, 2, 3, 5, 7, 8, 10, 12, 14, 15, 17, 19]
+};
+
 var _stopFlag = false;
 
 var settings = null;
 var role = null;
 
-
-var SCALES = {
-  "majorScale": [0, 2, 4, 5, 7, 9, 11, 12, 14, 16, 17, 19],
-  "minorScale": [0, 2, 3, 5, 7, 8, 10, 12, 14, 15, 17, 19]
-};
+var LOCAL_ROOT_VALUES = [1, 5, 3, 6]; 
 
 
 //Phrase representation: tone: -4 - 12, schedule: 0 - 7}]
@@ -114,12 +98,15 @@ function Phrase(notes) {
 
 
 var getScaleType = function(localRootValue) {
+  curScale = settings.tops[0].scale;
+  oppScale = (curScale === 'majorScale') ? 'minorScale' : 'majorScale';
+
   if (localRootValue === 2 || 
       localRootValue === 6) {
-    return 'minorScale';
+    return oppScale;
   }
 
-  return 'majorScale';
+  return curScale;
 };
 
 // TODO @paul -- this function needs to be broken up/explained
@@ -134,11 +121,11 @@ var getNoteNumber = function(scaleDegree, localRootValue, range) {
   } 
   else if (scaleDegree > 0) {
     newDegree = scaleDegree - 1;
-    noteNumber = (settings.globalRoot + localRootValue) + curScale[newDegree];
+    noteNumber = (settings.tops[0].globalRoot + localRootValue) + curScale[newDegree];
   } 
   else {
     newDegree = curScale.length + (scaleDegree - 1);
-    noteNumber = (settings.globalRoot - 12 + localRootValue) + curScale[newDegree];
+    noteNumber = (settings.tops[0].globalRoot - 12 + localRootValue) + curScale[newDegree];
   }
 
   if (range === "bass") { 
@@ -175,45 +162,68 @@ var getTonesTable = function() {
 };
 
 
-var playTone = function(freq, dur, startTime) {
+var playOsc = function(freq, dur, startTime, attack, release) {
   osc = ctx.createOscillator();
+  gainNode = ctx.createGain();
+
   osc.frequency.value = freq;
   osc.type = "square";
-  osc.connect(ctx.destination);
+  
+  //Connect nodes
+  osc.connect(gainNode);
+  gainNode.connect(ctx.destination);
+
+  //Play osc through envelope
   osc.start(startTime);
-  osc.stop(startTime + dur);
+  gainNode.gain.value = 0;
+  gainNode.gain.linearRampToValueAtTime(DEFAULT_AMP, startTime + attack); //Attack
+  gainNode.gain.linearRampToValueAtTime(DEFAULT_AMP, startTime + attack + (dur - attack)); //Sustain
+  gainNode.gain.linearRampToValueAtTime(0.0, startTime + attack + (dur - attack) + release); //Release
 };
 
 
 // TODO @paul -- this function needs to be broken up
 var playPhrase = function(section, phrasePosition, range) {
+  var attack, release;
   var startTime = ctx.currentTime;
-  var density = settings.density;
-  var phraseRoot = settings["sections"][section]["localRootValue"];
+
+  //Mid players control 2 sections each
+  var midPlayer = section % 2;
+  //Each density setting corresponds to 2 phrases
+  //and corresponds to an index in the appropriate midPlayer's settings array 
+  var densitySetting = (mid + 1) * Math.floor(phrasePosition / 2);  
+  var density = settings.mids[midPlayer]["nodeDensity"][densitySetting];
+  
+  var section = settings.bottoms[section];
+  var phraseRoot = LOCAL_ROOT_VALUES[section];
   var phraseIndex = 0;
   var beatValue, toneLookup, freq, duration, roll = null;
   var tonesTable = getTonesTable();
 
-  if (range === "treble") {
-    phraseIndex = settings["sections"][section]["phrases"][phrasePosition];
+  if (range === "lead") {
+    phraseIndex = section.lead[phrasePosition];
     phrase = getPhrase(phrases[phraseIndex]);
+    attack = settings.tops[0].leadEnvelope.attack;
+    release = settings.tops[0].leadEnvelope.release;
   } 
   else if (range === "bass") {
-    phraseIndex = settings["sections"][section]["bassPhrases"][phrasePosition];		
+    phraseIndex = section.bass[phrasePosition];		
     phrase = getPhrase(bassPhrases[phraseIndex]);
     bassTransform = (100 - density) / 2; 
     density = density + bassTransform; 
+    attack = settings.tops[0].bassEnvelope.attack;
+    release = settings.tops[0].bassEnvelope.release;
   }
 
   for (var i = 0; i < phrase.notes.length; i++) {
-    beatValue = (1 / (settings.tempo / 60)) * 4; 
+    beatValue = (1 / (settings.tops[0].tempo / 60)) * 4; 
     toneLookup = getNoteNumber(phrase.notes[i].tone, phraseRoot, range);
     freq = tonesTable[toneLookup];
     duration = beatValue / phrase.notes[i].noteValue;
     roll = (Math.random() * 100);
     
-    if (roll < settings.density) {
-      playTone(freq, duration, startTime);
+    if (roll < settings.tops[0].density) {
+      playOsc(freq, duration, startTime, attack, release);
     }
     
     startTime = startTime + duration;
@@ -222,7 +232,7 @@ var playPhrase = function(section, phrasePosition, range) {
 
 
 var getDuration = function() {
-  var beatValue = (1 / (settings.tempo / 60));
+  var beatValue = (1 / (settings.tops[0].tempo / 60));
   var duration = (2 * beatValue) * 1000; //Convert to ms for setTimeout
   return duration; 
 };
@@ -251,7 +261,7 @@ var schedulePhrase = function(section, phrasePosition) {
     return;
   }
   
-  playPhrase(section, phrasePosition, "treble");
+  playPhrase(section, phrasePosition, "lead");
   playPhrase(section, phrasePosition, "bass");
 
   setTimeout(function() { 
