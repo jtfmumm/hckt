@@ -14,6 +14,8 @@ function RoleManager(){
   this.mids = [];
   this.bottoms = [];
 
+  // initialize roles. if the id == -1, then the role is not a human.
+
   for (var i=0; i<NUM_PLAYERS; i++) {
     if (i < NUM_TOPS) { this.tops.push({id: -1, role: new TopRole});}
     if (i < NUM_MIDS) { this.mids.push({id: -1, role: new MidRole});}
@@ -22,23 +24,22 @@ function RoleManager(){
 }
 
 RoleManager.prototype.assign = function(socketId) {
+
   var role;
+
   if (!this.isTopFull()) {
-    this.addTop(socketId);
-    role = "topRole"
-    return;
+    var pos = this.addTop(socketId);
+    return {position: pos, role: "TopRole"};
   } else if (!this.isMidFull()) {
-    this.addMid(socketId);
-    role = "midRole"
-    return;
+    var pos = this.addMid(socketId);
+    return {position: pos, role: "MidRole"};
   } else if (!this.isBottomFull()) {
-    this.addBottom(socketId);
-    role = "bottomRole"
-    return;
+    var pos = this.addBottom(socketId);
+    return {position: pos, role: "BottomRole"};
   } else {
+    return "Too many users! Sorry!"
     // Tell the user that there are no spots left. Sorry!!
   }
-  return role;
 }
 
 RoleManager.prototype.unassign = function(socketId) {
@@ -125,7 +126,7 @@ RoleManager.prototype.addTop = function(id) {
   for (var i=0, len=this.tops.length; i<len; i++) {
     if (!this.tops[i].role.isHuman) {
       this.tops[i] = {id: id, role: new TopRole()};
-      break;
+      return i;
     }
   }
 }
@@ -134,7 +135,7 @@ RoleManager.prototype.addMid = function(id) {
   for (var i=0, len=this.mids.length; i<len; i++) {
     if (!this.mids[i].role.isHuman) {
       this.mids[i] = {id: id, role: new MidRole()};
-      break;
+      return i;
     }
   }
 }
@@ -143,20 +144,28 @@ RoleManager.prototype.addBottom = function(id) {
   for (var i=0, len=this.bottoms.length; i<len; i++) {
     if (!this.bottoms[i].role.isHuman) {
       this.bottoms[i] = {id: id, role: new BottomRole()};
-      break;
+      return i;
     }
   }
 }
 
-RoleManager.prototype.allUsers = function() {
-  return this.bottoms.concat(this.mids).concat(this.tops);
-}
-
 RoleManager.prototype.getUser = function(id) {
-  var users = this.allUsers;
-  for (var i=0, len=users; i<len; i++) {
-    if (users[i].id === id) {
-      return users[i];
+  
+  for (var i=0; i<this.tops.length; i++) {
+    if(this.tops[i].id === id) {
+      return this.tops[i];
+    }
+  }
+
+  for (var i=0; i<this.mids.length; i++) { 
+    if(this.mids[i].id === id) {
+      return this.mids[i];
+    }
+  }
+
+  for (var i=0; i<this.bottoms.length; i++) {
+    if(this.bottoms[i].id === id) {
+      return this.bottoms[i];
     }
   }
 }
