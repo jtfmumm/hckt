@@ -21,8 +21,6 @@ var io = socketio.listen(server);
 // HBS TEMPLATE VARIABLE
 var blocks = {};
 
-
-
 //STATE UTILS
 var setScale = function(scale) {
   state.scale = scale;
@@ -40,7 +38,6 @@ var setGlobalRoot = function(globalRoot) {
   state.globalRoot = globalRoot;
 }
 
-
 var generateLocalRootValue = function() {
   var rand = Math.floor(Math.random() * 100);
   var localRoot = null;
@@ -56,8 +53,7 @@ var generateLocalRootValue = function() {
   }
   else {
     return 3;
-  }
-  
+  }  
   
   if(rand < 45) {
     return 1;
@@ -105,13 +101,11 @@ var generateSection = function() {
   };
 };
 
-
 var generateSections = function() {
   for(var i=0, len=sectionLength; i<len; i++) {
     state.sections.push(generateSection());
   };
 };
-
 
 // GLOBAL STATE
 var state = {};
@@ -126,7 +120,6 @@ generateSections();
 
 console.log(JSON.stringify(state));
 
-
 // CONFIG
 app.configure(function() {
   app.set('view engine', 'html');
@@ -135,7 +128,6 @@ app.configure(function() {
   app.use(express.static(__dirname + '/static'));
   app.use(express.bodyParser());
 });
-
 
 // TEMPLATE CONFIG
 hbs.registerHelper('extend', function(name, context) {
@@ -182,14 +174,13 @@ app.get('/bottom', function (req, res, next) {
 io.sockets.on('connection', function (socket) {
   
   assignedRole = roleManager.assign(socket.id);
-  console.log("printing!")
-  roleManager.printUsers();
-  console.log("done printing!")
   socket.emit('init', {
     state: state,
     role: assignedRole
   });
   
+  console.log(roleManager.translate());
+
   socket.on('state.change', function(data) {
     socket.broadcast.emit('state.change', state);
   });
@@ -197,7 +188,7 @@ io.sockets.on('connection', function (socket) {
   socket.on('disconnect', function() {
     roleManager.unassign(this.id);
     console.log('disconnect detected for id=' + this.id);
-    roleManager.printUsers();
+    console.log(roleManager.translate());
   });
 });
 
