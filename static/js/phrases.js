@@ -19,6 +19,8 @@ var _stopFlag = false;
 var settings = null;
 var role = null;
 
+var LOCAL_ROOT_VALUES = [1, 5, 3, 6]; 
+
 
 //Phrase representation: tone: -4 - 12, schedule: 0 - 7}]
 //Representing relative notes as scale degrees 1-7
@@ -96,12 +98,15 @@ function Phrase(notes) {
 
 
 var getScaleType = function(localRootValue) {
+  curScale = settings.tops[0].scale;
+  oppScale = (curScale === 'majorScale') ? 'minorScale' : 'majorScale';
+
   if (localRootValue === 2 || 
       localRootValue === 6) {
-    return 'minorScale';
+    return oppScale;
   }
 
-  return 'majorScale';
+  return curScale;
 };
 
 // TODO @paul -- this function needs to be broken up/explained
@@ -116,11 +121,11 @@ var getNoteNumber = function(scaleDegree, localRootValue, range) {
   } 
   else if (scaleDegree > 0) {
     newDegree = scaleDegree - 1;
-    noteNumber = (settings.globalRoot + localRootValue) + curScale[newDegree];
+    noteNumber = (settings.tops[0].globalRoot + localRootValue) + curScale[newDegree];
   } 
   else {
     newDegree = curScale.length + (scaleDegree - 1);
-    noteNumber = (settings.globalRoot - 12 + localRootValue) + curScale[newDegree];
+    noteNumber = (settings.tops[0].globalRoot - 12 + localRootValue) + curScale[newDegree];
   }
 
   if (range === "bass") { 
@@ -179,34 +184,46 @@ var playOsc = function(freq, dur, startTime, attack, release) {
 
 // TODO @paul -- this function needs to be broken up
 var playPhrase = function(section, phrasePosition, range) {
+  var attack, release;
   var startTime = ctx.currentTime;
-  var density = settings.density;
-  var section = settings["sections"][section]
-  var phraseRoot = section["localRootValue"];
+
+  //Mid players control 2 sections each
+  var midPlayer = section % 2;
+  //Each density setting corresponds to 2 phrases
+  //and corresponds to an index in the appropriate midPlayer's settings array 
+  var densitySetting = (midPlayer + 1) * Math.floor(phrasePosition / 2);  
+  var density = settings.mids[midPlayer]["nodeDensity"][densitySetting];
+
+  var section = settings.bottoms[section];
+  var phraseRoot = LOCAL_ROOT_VALUES[section];
   var phraseIndex = 0;
   var beatValue, toneLookup, freq, duration, roll = null;
   var tonesTable = getTonesTable();
 
-  if (range === "treble") {
-    phraseIndex = section["phrases"][phrasePosition];
+  if (range === "lead") {
+    phraseIndex = section.lead[phrasePosition];
     phrase = getPhrase(phrases[phraseIndex]);
+    attack = settings.tops[0].leadEnvelope.attack;
+    release = settings.tops[0].leadEnvelope.release;
   } 
   else if (range === "bass") {
-    phraseIndex = section["bassPhrases"][phrasePosition];		
+    phraseIndex = section.bass[phrasePosition];		
     phrase = getPhrase(bassPhrases[phraseIndex]);
     bassTransform = (100 - density) / 2; 
     density = density + bassTransform; 
+    attack = settings.tops[0].bassEnvelope.attack;
+    release = settings.tops[0].bassEnvelope.release;
   }
 
   for (var i = 0; i < phrase.notes.length; i++) {
-    beatValue = (1 / (settings.tempo / 60)) * 4; 
+    beatValue = (1 / (settings.tops[0].tempo / 60)) * 4; 
     toneLookup = getNoteNumber(phrase.notes[i].tone, phraseRoot, range);
     freq = tonesTable[toneLookup];
     duration = beatValue / phrase.notes[i].noteValue;
     roll = (Math.random() * 100);
     
-    if (roll < settings.density) {
-      playOsc(freq, duration, startTime);
+    if (roll < settings.tops[0].density) {
+      playOsc(freq, duration, startTime, attack, release);
     }
     
     startTime = startTime + duration;
@@ -215,7 +232,7 @@ var playPhrase = function(section, phrasePosition, range) {
 
 
 var getDuration = function() {
-  var beatValue = (1 / (settings.tempo / 60));
+  var beatValue = (1 / (settings.tops[0].tempo / 60));
   var duration = (2 * beatValue) * 1000; //Convert to ms for setTimeout
   return duration; 
 };
@@ -244,7 +261,7 @@ var schedulePhrase = function(section, phrasePosition) {
     return;
   }
   
-  playPhrase(section, phrasePosition, "treble");
+  playPhrase(section, phrasePosition, "lead");
   playPhrase(section, phrasePosition, "bass");
 
   setTimeout(function() { 
