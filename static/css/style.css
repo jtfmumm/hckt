@@ -1,0 +1,11 @@
+.row-fluid {
+	border-radius: 15px;
+	margin-top: 15px;		
+}
+.row-fluid .span1,
+.row-fluid .span4,
+.row-fluid .span2,
+.row-fluid .span12 {
+	border-radius: 15px;
+	padding: 15px;
+}

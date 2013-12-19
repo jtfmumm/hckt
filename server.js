@@ -170,8 +170,11 @@ app.get('/test', function (req, res, next) {
 app.get('/master', function (req, res, next) {
   return res.render('master', {});
 });
-app.get('/section', function (req, res, next) {
-  return res.render('section', {});
+app.get('/middle', function (req, res, next) {
+  return res.render('middle', {});
+});
+app.get('/bottom', function (req, res, next) {
+  return res.render('bottom', {});
 });
 
 
