@@ -5,7 +5,7 @@ function TopRole() {
   this.state = {
     globalRoot: 30,
     tempo: 120,
-    scale: 30,
+    scale: "major",
     adventurousness: [],
     leadEnvelope: {
       attack: 7,
