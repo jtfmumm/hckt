@@ -124,356 +124,376 @@
 
 {{#extend "deferred_scripts"}}
 	<script>
-		var $noteDensitySlider1 = $('#note-density-1').slider({
-		  orientation: 'vertical',
-		  range: 'min',
-		  min: 0,
-		  max: 15,
-		  value: 7
-		});
-		
-		var $noteDensitySlider2 = $('#note-density-2').slider({
-		  orientation: 'vertical',
-		  range: 'min',
-		  min: 0,
-		  max: 15,
-		  value: 7
-		});
-		
-		var $noteDensitySlider3 = $('#note-density-3').slider({
-		  orientation: 'vertical',
-		  range: 'min',
-		  min: 0,
-		  max: 15,
-		  value: 7
-		});
-		
-		var $noteDensitySlider4 = $('#note-density-4').slider({
-		  orientation: 'vertical',
-		  range: 'min',
-		  min: 0,
-		  max: 15,
-		  value: 7
-		});
-		
-		var $noteDensitySlider5 = $('#note-density-5').slider({
-		  orientation: 'vertical',
-		  range: 'min',
-		  min: 0,
-		  max: 15,
-		  value: 7
-		});
-		
-		var $noteDensitySlider6 = $('#note-density-6').slider({
-		  orientation: 'vertical',
-		  range: 'min',
-		  min: 0,
-		  max: 15,
-		  value: 7
-		});
-		
-		var $noteDensitySlider7 = $('#note-density-7').slider({
-		  orientation: 'vertical',
-		  range: 'min',
-		  min: 0,
-		  max: 15,
-		  value: 7
-		});
-		
-		var $noteDensitySlider8 = $('#note-density-8').slider({
-		  orientation: 'vertical',
-		  range: 'min',
-		  min: 0,
-		  max: 15,
-		  value: 7
-		});
-		
-		
-		
-		var $chordDensitySlider1 = $('#chord-density-1').slider({
-		  orientation: 'vertical',
-		  range: 'min',
-		  min: 0,
-		  max: 15,
-		  value: 7
-		});
-		
-		var $chordDensitySlider2 = $('#chord-density-2').slider({
-		  orientation: 'vertical',
-		  range: 'min',
-		  min: 0,
-		  max: 15,
-		  value: 7
-		});
-		
-		var $chordDensitySlider3 = $('#chord-density-3').slider({
-		  orientation: 'vertical',
-		  range: 'min',
-		  min: 0,
-		  max: 15,
-		  value: 7
-		});
-		
-		var $chordDensitySlider4 = $('#chord-density-4').slider({
-		  orientation: 'vertical',
-		  range: 'min',
-		  min: 0,
-		  max: 15,
-		  value: 7
-		});
-		
-		var $chordDensitySlider5 = $('#chord-density-5').slider({
-		  orientation: 'vertical',
-		  range: 'min',
-		  min: 0,
-		  max: 15,
-		  value: 7
-		});
-		
-		var $chordDensitySlider6 = $('#chord-density-6').slider({
-		  orientation: 'vertical',
-		  range: 'min',
-		  min: 0,
-		  max: 15,
-		  value: 7
-		});
-		
-		var $chordDensitySlider7 = $('#chord-density-7').slider({
-		  orientation: 'vertical',
-		  range: 'min',
-		  min: 0,
-		  max: 15,
-		  value: 7
-		});
-		
-		var $chordDensitySlider8 = $('#chord-density-8').slider({
-		  orientation: 'vertical',
-		  range: 'min',
-		  min: 0,
-		  max: 15,
-		  value: 7
-		});
-		
-		
-		var $dynamicsSlider1 = $('#dynamics-1').slider({
-		  orientation: 'vertical',
-		  range: 'min',
-		  min: 0,
-		  max: 15,
-		  value: 7
-		});
-		
-		var $dynamicsSlider2 = $('#dynamics-2').slider({
-		  orientation: 'vertical',
-		  range: 'min',
-		  min: 0,
-		  max: 15,
-		  value: 7
-		});
-		
-		var $dynamicsSlider3 = $('#dynamics-3').slider({
-		  orientation: 'vertical',
-		  range: 'min',
-		  min: 0,
-		  max: 15,
-		  value: 7
-		});
-		
-		var $dynamicsSlider4 = $('#dynamics-4').slider({
-		  orientation: 'vertical',
-		  range: 'min',
-		  min: 0,
-		  max: 15,
-		  value: 7
-		});
-		
-		var $dynamicsSlider5 = $('#dynamics-5').slider({
-		  orientation: 'vertical',
-		  range: 'min',
-		  min: 0,
-		  max: 15,
-		  value: 7
-		});
-		
-		var $dynamicsSlider6 = $('#dynamics-6').slider({
-		  orientation: 'vertical',
-		  range: 'min',
-		  min: 0,
-		  max: 15,
-		  value: 7
-		});
-		
-		var $dynamicsSlider7 = $('#dynamics-7').slider({
-		  orientation: 'vertical',
-		  range: 'min',
-		  min: 0,
-		  max: 15,
-		  value: 7
-		});
-		
-		var $dynamicsSlider8 = $('#dynamics-8').slider({
-		  orientation: 'vertical',
-		  range: 'min',
-		  min: 0,
-		  max: 15,
-		  value: 7
-		});
-		
-		
-		$noteDensitySlider1.on(
-			"slidechange", function( event, ui ) {
-				console.log('noteDensitySlider1 changed to ' + ui.value);
-			});
-		
-		$noteDensitySlider2.on(
-			"slidechange", function( event, ui ) {
-				console.log('noteDensitySlider2 changed to ' + ui.value);
-			});
-	
-		$noteDensitySlider3.on(
-			"slidechange", function( event, ui ) {
-				console.log('noteDensitySlider3 changed to ' + ui.value);
-			});
-
-		$noteDensitySlider4.on(
-			"slidechange", function( event, ui ) {
-				console.log('noteDensitySlider4 changed to ' + ui.value);
-			});
-
-		$noteDensitySlider5.on(
-			"slidechange", function( event, ui ) {
-				console.log('noteDensitySlider5 changed to ' + ui.value);
-			});
-
-		$noteDensitySlider6.on(
-			"slidechange", function( event, ui ) {
-				console.log('noteDensitySlider6 changed to ' + ui.value);
-			});
-
-		$noteDensitySlider7.on(
-			"slidechange", function( event, ui ) {
-				console.log('noteDensitySlider7 changed to ' + ui.value);
-			});
-
-		$noteDensitySlider8.on(
-			"slidechange", function( event, ui ) {
-				console.log('noteDensitySlider8 changed to ' + ui.value);
-			});
-
-	
-		$chordDensitySlider1.on(
-			"slidechange", function( event, ui ) {
-				console.log('chordDensitySlider1 changed to ' + ui.value);
-			});
-		
-		$chordDensitySlider2.on(
-			"slidechange", function( event, ui ) {
-				console.log('chordDensitySlider2 changed to ' + ui.value);
-			});
-	
-		$chordDensitySlider3.on(
-			"slidechange", function( event, ui ) {
-				console.log('chordDensitySlider3 changed to ' + ui.value);
-			});
-	
-		$chordDensitySlider4.on(
-			"slidechange", function( event, ui ) {
-				console.log('chordDensitySlider4 changed to ' + ui.value);
-			});
-		
-		$chordDensitySlider5.on(
-			"slidechange", function( event, ui ) {
-				console.log('chordDensitySlider5 changed to ' + ui.value);
-			});
-		
-		$chordDensitySlider6.on(
-			"slidechange", function( event, ui ) {
-				console.log('chordDensitySlider6 changed to ' + ui.value);
-			});
-		
-		$chordDensitySlider7.on(
-			"slidechange", function( event, ui ) {
-				console.log('chordDensitySlider7 changed to ' + ui.value);
-			});
-
-		$chordDensitySlider8.on(
-			"slidechange", function( event, ui ) {
-				console.log('chordDensitySlider8 changed to ' + ui.value);
-			});
-		
-
-		$dynamicsSlider1.on(
-			"slidechange", function( event, ui ) {
-				console.log('dynamicsSlider1 changed to ' + ui.value);
-			});
-
-		$dynamicsSlider2.on(
-			"slidechange", function( event, ui ) {
-				console.log('dynamicsSlider2 changed to ' + ui.value);
-			});
-
-		$dynamicsSlider3.on(
-			"slidechange", function( event, ui ) {
-				console.log('dynamicsSlider3 changed to ' + ui.value);
-			});
-
-		$dynamicsSlider4.on(
-			"slidechange", function( event, ui ) {
-				console.log('dynamicsSlider4 changed to ' + ui.value);
-			});
-
-		$dynamicsSlider5.on(
-			"slidechange", function( event, ui ) {
-				console.log('dynamicsSlider5 changed to ' + ui.value);
-			});
-
-		$dynamicsSlider6.on(
-			"slidechange", function( event, ui ) {
-				console.log('dynamicsSlider6 changed to ' + ui.value);
-			});
-
-		$dynamicsSlider7.on(
-			"slidechange", function( event, ui ) {
-				console.log('dynamicsSlider7 changed to ' + ui.value);
-			});
-
-		$dynamicsSlider8.on(
-			"slidechange", function( event, ui ) {
-				console.log('dynamicsSlider8 changed to ' + ui.value);
-			});
-
-			
 		socket.on("init", function(data) {
-		  settings = data.state;
-		  role = data.role;
-			/*
-			$noteDensitySlider1.slider( "value", 55 );
-			$noteDensitySlider2.slider( "value", 55 );
-			$noteDensitySlider3.slider( "value", 55 );
-			$noteDensitySlider4.slider( "value", 55 );
-			$noteDensitySlider5.slider( "value", 55 );
-			$noteDensitySlider6.slider( "value", 55 );
-			$noteDensitySlider7.slider( "value", 55 );
-			$noteDensitySlider8.slider( "value", 55 );
-			
-			$chordDensitySlider1.slider( "value", 55 );
-			$chordDensitySlider2.slider( "value", 55 );
-			$chordDensitySlider3.slider( "value", 55 );
-			$chordDensitySlider4.slider( "value", 55 );
-			$chordDensitySlider5.slider( "value", 55 );
-			$chordDensitySlider6.slider( "value", 55 );
-			$chordDensitySlider7.slider( "value", 55 );
-			$chordDensitySlider8.slider( "value", 55 );
-			
-			$dynamicsSlider1.slider( "value", 55 );
-			$dynamicsSlider2.slider( "value", 55 );
-			$dynamicsSlider3.slider( "value", 55 );
-			$dynamicsSlider4.slider( "value", 55 );
-			$dynamicsSlider5.slider( "value", 55 );
-			$dynamicsSlider6.slider( "value", 55 );
-			$dynamicsSlider7.slider( "value", 55 );
-			$dynamicsSlider8.slider( "value", 55 );
-			*/
+			var state = data.state;
+			var roleIndex = data.role.position;
+			var roleState = state.mids[roleIndex];
+		
+			var $noteDensitySlider1 = $('#note-density-1').slider({
+			  orientation: 'vertical',
+			  range: 'min',
+			  min: 0,
+			  max: 15,
+			  value: roleState.noteDensity[0]
+			});
+
+			var $noteDensitySlider2 = $('#note-density-2').slider({
+			  orientation: 'vertical',
+			  range: 'min',
+			  min: 0,
+			  max: 15,
+			  value: roleState.noteDensity[1]
+			});
+
+			var $noteDensitySlider3 = $('#note-density-3').slider({
+			  orientation: 'vertical',
+			  range: 'min',
+			  min: 0,
+			  max: 15,
+			  value: roleState.noteDensity[2]
+			});
+
+			var $noteDensitySlider4 = $('#note-density-4').slider({
+			  orientation: 'vertical',
+			  range: 'min',
+			  min: 0,
+			  max: 15,
+			  value: roleState.noteDensity[3]
+			});
+
+			var $noteDensitySlider5 = $('#note-density-5').slider({
+			  orientation: 'vertical',
+			  range: 'min',
+			  min: 0,
+			  max: 15,
+			  value: roleState.noteDensity[4]
+			});
+
+			var $noteDensitySlider6 = $('#note-density-6').slider({
+			  orientation: 'vertical',
+			  range: 'min',
+			  min: 0,
+			  max: 15,
+			  value: roleState.noteDensity[5]
+			});
+
+			var $noteDensitySlider7 = $('#note-density-7').slider({
+			  orientation: 'vertical',
+			  range: 'min',
+			  min: 0,
+			  max: 15,
+			  value: roleState.noteDensity[6]
+			});
+
+			var $noteDensitySlider8 = $('#note-density-8').slider({
+			  orientation: 'vertical',
+			  range: 'min',
+			  min: 0,
+			  max: 15,
+			  value: roleState.noteDensity[7]
+			});
+
+
+
+			var $chordDensitySlider1 = $('#chord-density-1').slider({
+			  orientation: 'vertical',
+			  range: 'min',
+			  min: 0,
+			  max: 15,
+			  value: roleState.chordDensity[0]
+			});
+
+			var $chordDensitySlider2 = $('#chord-density-2').slider({
+			  orientation: 'vertical',
+			  range: 'min',
+			  min: 0,
+			  max: 15,
+			  value: roleState.chordDensity[1]
+			});
+
+			var $chordDensitySlider3 = $('#chord-density-3').slider({
+			  orientation: 'vertical',
+			  range: 'min',
+			  min: 0,
+			  max: 15,
+			  value: roleState.chordDensity[2]
+			});
+
+			var $chordDensitySlider4 = $('#chord-density-4').slider({
+			  orientation: 'vertical',
+			  range: 'min',
+			  min: 0,
+			  max: 15,
+			  value: roleState.chordDensity[3]
+			});
+
+			var $chordDensitySlider5 = $('#chord-density-5').slider({
+			  orientation: 'vertical',
+			  range: 'min',
+			  min: 0,
+			  max: 15,
+			  value: roleState.chordDensity[4]
+			});
+
+			var $chordDensitySlider6 = $('#chord-density-6').slider({
+			  orientation: 'vertical',
+			  range: 'min',
+			  min: 0,
+			  max: 15,
+			  value: roleState.chordDensity[5]
+			});
+
+			var $chordDensitySlider7 = $('#chord-density-7').slider({
+			  orientation: 'vertical',
+			  range: 'min',
+			  min: 0,
+			  max: 15,
+			  value: roleState.chordDensity[6]
+			});
+
+			var $chordDensitySlider8 = $('#chord-density-8').slider({
+			  orientation: 'vertical',
+			  range: 'min',
+			  min: 0,
+			  max: 15,
+			  value: roleState.chordDensity[7]
+			});
+
+
+			var $dynamicsSlider1 = $('#dynamics-1').slider({
+			  orientation: 'vertical',
+			  range: 'min',
+			  min: 0,
+			  max: 15,
+			  value: roleState.dynamics[0]
+			});
+
+			var $dynamicsSlider2 = $('#dynamics-2').slider({
+			  orientation: 'vertical',
+			  range: 'min',
+			  min: 0,
+			  max: 15,
+			  value: roleState.dynamics[1]
+			});
+
+			var $dynamicsSlider3 = $('#dynamics-3').slider({
+			  orientation: 'vertical',
+			  range: 'min',
+			  min: 0,
+			  max: 15,
+			  value: roleState.dynamics[2]
+			});
+
+			var $dynamicsSlider4 = $('#dynamics-4').slider({
+			  orientation: 'vertical',
+			  range: 'min',
+			  min: 0,
+			  max: 15,
+			  value: roleState.dynamics[3]
+			});
+
+			var $dynamicsSlider5 = $('#dynamics-5').slider({
+			  orientation: 'vertical',
+			  range: 'min',
+			  min: 0,
+			  max: 15,
+			  value: roleState.dynamics[4]
+			});
+
+			var $dynamicsSlider6 = $('#dynamics-6').slider({
+			  orientation: 'vertical',
+			  range: 'min',
+			  min: 0,
+			  max: 15,
+			  value: roleState.dynamics[5]
+			});
+
+			var $dynamicsSlider7 = $('#dynamics-7').slider({
+			  orientation: 'vertical',
+			  range: 'min',
+			  min: 0,
+			  max: 15,
+			  value: roleState.dynamics[6]
+			});
+
+			var $dynamicsSlider8 = $('#dynamics-8').slider({
+			  orientation: 'vertical',
+			  range: 'min',
+			  min: 0,
+			  max: 15,
+			  value: roleState.dynamics[7]
+			});
+
+
+			$noteDensitySlider1.on(
+				"slidechange", function( event, ui ) {
+					console.log('noteDensitySlider1 changed to ' + ui.value);
+					roleState.noteDensity[0] = ui.value;
+					socket.emit('state.change', state);
+				});
+
+			$noteDensitySlider2.on(
+				"slidechange", function( event, ui ) {
+					console.log('noteDensitySlider2 changed to ' + ui.value);
+					roleState.noteDensity[1] = ui.value;
+					socket.emit('state.change', state);
+				});
+
+			$noteDensitySlider3.on(
+				"slidechange", function( event, ui ) {
+					console.log('noteDensitySlider3 changed to ' + ui.value);
+					roleState.noteDensity[2] = ui.value;
+					socket.emit('state.change', state);
+				});
+
+			$noteDensitySlider4.on(
+				"slidechange", function( event, ui ) {
+					console.log('noteDensitySlider4 changed to ' + ui.value);
+					roleState.noteDensity[3] = ui.value;
+					socket.emit('state.change', state);
+				});
+
+			$noteDensitySlider5.on(
+				"slidechange", function( event, ui ) {
+					console.log('noteDensitySlider5 changed to ' + ui.value);
+					roleState.noteDensity[4] = ui.value;
+					socket.emit('state.change', state);
+				});
+
+			$noteDensitySlider6.on(
+				"slidechange", function( event, ui ) {
+					console.log('noteDensitySlider6 changed to ' + ui.value);
+					roleState.noteDensity[5] = ui.value;
+					socket.emit('state.change', state);
+				});
+
+			$noteDensitySlider7.on(
+				"slidechange", function( event, ui ) {
+					console.log('noteDensitySlider7 changed to ' + ui.value);
+					roleState.noteDensity[6] = ui.value;
+					socket.emit('state.change', state);
+				});
+
+			$noteDensitySlider8.on(
+				"slidechange", function( event, ui ) {
+					console.log('noteDensitySlider8 changed to ' + ui.value);
+					roleState.noteDensity[7] = ui.value;
+					socket.emit('state.change', state);
+				});
+
+
+			$chordDensitySlider1.on(
+				"slidechange", function( event, ui ) {
+					console.log('chordDensitySlider1 changed to ' + ui.value);
+					roleState.chordDensity[0] = ui.value;
+					socket.emit('state.change', state);
+				});
+
+			$chordDensitySlider2.on(
+				"slidechange", function( event, ui ) {
+					console.log('chordDensitySlider2 changed to ' + ui.value);
+					roleState.chordDensity[1] = ui.value;
+					socket.emit('state.change', state);
+				});
+
+			$chordDensitySlider3.on(
+				"slidechange", function( event, ui ) {
+					console.log('chordDensitySlider3 changed to ' + ui.value);
+					roleState.chordDensity[2] = ui.value;
+					socket.emit('state.change', state);
+				});
+
+			$chordDensitySlider4.on(
+				"slidechange", function( event, ui ) {
+					console.log('chordDensitySlider4 changed to ' + ui.value);
+					roleState.chordDensity[3] = ui.value;
+					socket.emit('state.change', state);
+				});
+
+			$chordDensitySlider5.on(
+				"slidechange", function( event, ui ) {
+					console.log('chordDensitySlider5 changed to ' + ui.value);
+					roleState.chordDensity[4] = ui.value;
+					socket.emit('state.change', state);
+				});
+
+			$chordDensitySlider6.on(
+				"slidechange", function( event, ui ) {
+					console.log('chordDensitySlider6 changed to ' + ui.value);
+					roleState.chordDensity[5] = ui.value;
+					socket.emit('state.change', state);
+				});
+
+			$chordDensitySlider7.on(
+				"slidechange", function( event, ui ) {
+					console.log('chordDensitySlider7 changed to ' + ui.value);
+					roleState.chordDensity[6] = ui.value;
+					socket.emit('state.change', state);
+				});
+
+			$chordDensitySlider8.on(
+				"slidechange", function( event, ui ) {
+					console.log('chordDensitySlider8 changed to ' + ui.value);
+					roleState.chordDensity[7] = ui.value;
+					socket.emit('state.change', state);
+				});
+
+
+			$dynamicsSlider1.on(
+				"slidechange", function( event, ui ) {
+					console.log('dynamicsSlider1 changed to ' + ui.value);
+					roleState.dynamics[0] = ui.value;
+					socket.emit('state.change', state);
+				});
+
+			$dynamicsSlider2.on(
+				"slidechange", function( event, ui ) {
+					console.log('dynamicsSlider2 changed to ' + ui.value);
+					roleState.dynamics[1] = ui.value;
+					socket.emit('state.change', state);
+				});
+
+			$dynamicsSlider3.on(
+				"slidechange", function( event, ui ) {
+					console.log('dynamicsSlider3 changed to ' + ui.value);
+					roleState.dynamics[2] = ui.value;
+					socket.emit('state.change', state);
+				});
+
+			$dynamicsSlider4.on(
+				"slidechange", function( event, ui ) {
+					console.log('dynamicsSlider4 changed to ' + ui.value);
+					roleState.dynamics[3] = ui.value;
+					socket.emit('state.change', state);
+				});
+
+			$dynamicsSlider5.on(
+				"slidechange", function( event, ui ) {
+					console.log('dynamicsSlider5 changed to ' + ui.value);
+					roleState.dynamics[4] = ui.value;
+					socket.emit('state.change', state);
+				});
+
+			$dynamicsSlider6.on(
+				"slidechange", function( event, ui ) {
+					console.log('dynamicsSlider6 changed to ' + ui.value);
+					roleState.dynamics[5] = ui.value;
+					socket.emit('state.change', state);
+				});
+
+			$dynamicsSlider7.on(
+				"slidechange", function( event, ui ) {
+					console.log('dynamicsSlider7 changed to ' + ui.value);
+					roleState.dynamics[6] = ui.value;
+					socket.emit('state.change', state);
+				});
+
+			$dynamicsSlider8.on(
+				"slidechange", function( event, ui ) {
+					console.log('dynamicsSlider8 changed to ' + ui.value);
+					roleState.dynamics[7] = ui.value;
+					socket.emit('state.change', state);
+				});
 		});
 	</script>
 {{/extend}}

@@ -13,7 +13,7 @@
 <!-- GLOBAL ROOT -->
 <div style="margin: 15px;">
 	<div class="row-fluid" style="background-color:#fcc;">
-		<div class="span4">
+		<div class="span4 offset4">
 			<label for="global-root-val">Global Root</label>
 			<div id="global-root"></div>
 		</div>
@@ -23,11 +23,6 @@
 			<div id="tempo"></div>
 		</div>
 
-		<!-- ADVENTUROUSNESS -->
-		<div class="span4">
-			<label for="adventurousness-val">Adventurousness</label>
-			<div id="adventurousness"></div>
-		</div>
 	</div>
 
 
@@ -75,126 +70,128 @@
 {{#extend "deferred_scripts"}}
 	<script>
 	  (function($) {
-			var state = null;
-			var role = null;
-		
-			var $majorScaleRadioButton = $('#major-scale');
-			var $minorScaleRadioButton = $('#minor-scale');
-			
-			$majorScaleRadioButton.click(function(evt) {
-				console.log('set scale to Major');
-			});
-			
-			$minorScaleRadioButton.click(function(evt) {
-				console.log('set scale to Minor');
-			});
-		
-			var $globalRootSlider = $( '#global-root' ).slider({
-	      orientation: 'vertical',
-	      range: 'min',
-	      min: 1,
-	      max: 11,
-	      value: 7
-			});
-
-			var $tempoSlider = $('#tempo').slider({
-	      orientation: 'vertical',
-	      range: 'min',
-	      min: 110,
-	      max: 130,
-	      value: 120
-	   	});
-
-			var $adventurousnessSlider =  $('#adventurousness').slider({
-	      orientation: 'vertical',
-	      range: 'min',
-	      min: 0,
-	      max: 15,
-	      value: 7
-	   	});
-
-			var $leadAttackSlider = $('#lead-attack').slider({
-	      orientation: 'vertical',
-	      range: 'min',
-	      min: 0,
-	      max: 15,
-	      value: 7
-	   	});
-
-			var $leadReleaseSlider = $('#lead-release').slider({
-	      orientation: 'vertical',
-	      range: 'min',
-	      min: 0,
-	      max: 15,
-	      value: 7
-	   	});
-
-			var $bassAttackSlider = $('#bass-attack').slider({
-	      orientation: 'vertical',
-	      range: 'min',
-	      min: 0,
-	      max: 15,
-	      value: 7
-	   	});
-
-			var $bassReleaseSlider = $('#bass-release').slider({
-	      orientation: 'vertical',
-	      range: 'min',
-	      min: 0,
-	      max: 15,
-	      value: 7
-	   	});
-	
-			$globalRootSlider.on(
-				"slidechange", function( event, ui ) {
-					console.log('globalRootSlider changed to ' + ui.value);
-				});
-				
-			$tempoSlider.on(
-				"slidechange", function( event, ui ) {
-					console.log('tempoSlider changed to ' + ui.value);
-				});	
-
-			$adventurousnessSlider.on(
-				"slidechange", function( event, ui ) {
-					console.log('adventurousnessSlider changed to ' + ui.value);
-				});
-				
-			$leadAttackSlider.on(
-				"slidechange", function( event, ui ) {
-					console.log('leadAttackSlider changed to ' + ui.value);
-				});
-			
-			$leadReleaseSlider.on(
-				"slidechange", function( event, ui ) {
-					console.log('leadReleaseSlider changed to ' + ui.value);
-				});
-				
-			$bassAttackSlider.on(
-				"slidechange", function( event, ui ) {
-					console.log('bassAttackSlider changed to ' + ui.value);
-				});
-				
-			$bassReleaseSlider.on(
-				"slidechange", function( event, ui ) {
-					console.log('bassReleaseSlider changed to ' + ui.value);
-				});
-				
-				
 			socket.on("init", function(data) {
-			  settings = data.state;
-			  role = data.role;
-				/*
-				$globalRootSlider.slider( "value", 55 );
-				$tempoSlider.slider( "value", 55 );
-				$adventurousnessSlider.slider( "value", 55 );
-				$leadAttackSlider.slider( "value", 55 );
-				$leadReleaseSlider.slider( "value", 55 );
-				$bassAttackSlider.slider( "value", 55 );
-				$bassReleaseSlider.slider( "value", 55 );
-				*/
-			});	
+			  var state = data.state;
+				var roleIndex = data.role.position;
+				var roleState = state.tops[roleIndex];
 				
+				debugger;
+				
+				var $majorScaleRadioButton = $('#major-scale');
+				var $minorScaleRadioButton = $('#minor-scale');
+				
+				if(roleState.scale === 'majorScale'){
+					$majorScaleRadioButton.prop('checked', true);
+					$minorScaleRadioButton.prop('checked', false);
+				}
+				else {
+					$majorScaleRadioButton.prop('checked', false);
+					$minorScaleRadioButton.prop('checked', true);
+				}
+				
+
+				$majorScaleRadioButton.click(function(evt) {
+					roleState.scale = 'majorScale';
+					socket.emit('state.change', state);
+				});
+
+				$minorScaleRadioButton.click(function(evt) {
+					roleState.scale = 'majorScale';
+					socket.emit('state.change', state);
+				});
+
+				var $globalRootSlider = $( '#global-root' ).slider({
+		      orientation: 'vertical',
+		      range: 'min',
+		      min: 1,
+		      max: 11,
+		      value: roleState.globalRoot
+				});
+
+				var $tempoSlider = $('#tempo').slider({
+		      orientation: 'vertical',
+		      range: 'min',
+		      min: 110,
+		      max: 130,
+		      value: roleState.tempo
+		   	});
+
+
+				var $leadAttackSlider = $('#lead-attack').slider({
+		      orientation: 'vertical',
+		      range: 'min',
+		      min: 0,
+		      max: 15,
+		      value: roleState.leadEnvelope.attack
+		   	});
+
+				var $leadReleaseSlider = $('#lead-release').slider({
+		      orientation: 'vertical',
+		      range: 'min',
+		      min: 0,
+		      max: 15,
+		      value: roleState.leadEnvelope.release
+		   	});
+
+				var $bassAttackSlider = $('#bass-attack').slider({
+		      orientation: 'vertical',
+		      range: 'min',
+		      min: 0,
+		      max: 15,
+		      value: roleState.bassEnvelope.attack
+		   	});
+
+				var $bassReleaseSlider = $('#bass-release').slider({
+		      orientation: 'vertical',
+		      range: 'min',
+		      min: 0,
+		      max: 15,
+		      value: roleState.bassEnvelope.release
+		   	});
+
+				$globalRootSlider.on(
+					"slidechange", function( event, ui ) {
+						console.log('globalRootSlider changed to ' + ui.value);
+						roleState.globalRoot = ui.value;
+						socket.emit('state.change', state);
+					});
+
+				$tempoSlider.on(
+					"slidechange", function( event, ui ) {
+						console.log('tempoSlider changed to ' + ui.value);
+						roleState.tempo = ui.value;
+						socket.emit('state.change', state);
+					});	
+
+
+				$leadAttackSlider.on(
+					"slidechange", function( event, ui ) {
+						console.log('leadAttackSlider changed to ' + ui.value);
+						roleState.leadEnvelope.attack = ui.value;
+						socket.emit('state.change', state);
+					});
+
+				$leadReleaseSlider.on(
+					"slidechange", function( event, ui ) {
+						console.log('leadReleaseSlider changed to ' + ui.value);
+						roleState.leadEnvelope.release = ui.value;
+						socket.emit('state.change', state);
+					});
+
+				$bassAttackSlider.on(
+					"slidechange", function( event, ui ) {
+						console.log('bassAttackSlider changed to ' + ui.value);
+						roleState.bassEnvelope.attack = ui.value;
+						socket.emit('state.change', state);
+					});
+
+				$bassReleaseSlider.on(
+					"slidechange", function( event, ui ) {
+						console.log('bassReleaseSlider changed to ' + ui.value);
+						roleState.bassEnvelope.release = ui.value;
+						socket.emit('state.change', state);
+					});
+			});	
 	  })(jQuery);
 	</script>
 {{/extend}}

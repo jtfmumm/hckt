@@ -1,5 +1,4 @@
 <div id="wrapper">
-  <div id="sequencer"></div>
 </div>
 
 {{#extend "deferred_scripts"}}
@@ -7,7 +6,19 @@
 	socket.on("init", function(data) {
 	  settings = data.state;
 	  role = data.role;
-		console.log(data);
+
+		if(!role) {
+			$('#wrapper').html('Sorry!!! All spots are filled!')
+		}
+		else if(role.role === 'TopRole') {
+			window.location.href = '/master';
+		}
+		else if(role.role === 'MidRole') {
+			window.location.href = '/middle';
+		}
+		else if(role.role === 'BottomRole') {
+			window.location.href = '/bottom';
+		}
 	});
 </script>
 {{/extend}}
