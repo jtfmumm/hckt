@@ -81,6 +81,22 @@ var bassPhrases = [
   [[1, 8], [1, 16], [2, 16], [3, 16], [5, 16], [6, 16], [8, 16]] //sunshine
 ];
 
+var chordMatrix = [
+//          1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12
+/* 1 */  [  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0], // 1
+/* 2 */  [  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0], // 2
+/* 3 */  [  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0], // 3
+/* 4 */  [  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0], // 4
+/* 5 */  [  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0], // 5
+/* 6 */  [  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0], // 6
+/* 7 */  [  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0], // 7
+/* 8 */  [  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0], // 8
+/* 9 */  [  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0], // 9
+/*10 */  [  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0], // 10
+/*11 */  [  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0], // 11
+/*12 */  [  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0], // 12
+//          1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12
+  ]
 
 // Audio context
 var ctx = new webkitAudioContext();
@@ -181,6 +197,20 @@ var playOsc = function(freq, dur, startTime, attack, release) {
   gainNode.gain.linearRampToValueAtTime(0.0, startTime + attack + (dur - attack) + release); //Release
 };
 
+var getNoteDensity = function(value) {
+  //Values from 60-94
+  return ((value * 2) + 60);
+};
+
+var getDynamics = function(value) {
+  //Values from [0.4, 0.4] to [0.25, 0.55]
+  newValue = value / 100;
+  return [(DEFAULT_AMP - newValue), (DEFAULT_AMP + newValue)];
+};
+
+var getChordDensity = function(value) {
+  return null;
+};
 
 // TODO @paul -- this function needs to be broken up
 var playPhrase = function(section, phrasePosition, range) {
@@ -191,8 +221,9 @@ var playPhrase = function(section, phrasePosition, range) {
   var midPlayer = section % 2;
   //Each density setting corresponds to 2 phrases
   //and corresponds to an index in the appropriate midPlayer's settings array 
-  var densitySetting = (midPlayer + 1) * Math.floor(phrasePosition / 2);  
-  var density = settings.mids[midPlayer]["nodeDensity"][densitySetting];
+  var densityPosition = (midPlayer + 1) * Math.floor(phrasePosition / 2);  
+  var densitySetting = settings.mids[midPlayer].noteDensity[densityPosition];
+  var density = getNoteDensity(densitySetting);
 
   var section = settings.bottoms[section];
   var phraseRoot = LOCAL_ROOT_VALUES[section];
