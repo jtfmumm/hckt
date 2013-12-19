@@ -11,8 +11,8 @@ var phraseLength = 8;
 
 var rolesLength = 8;
 
-var Roles = require("./roles.js");
-var roles = new Roles(rolesLength);
+var RoleManager = require("./roles/role_manager.js");
+var roleManager = new RoleManager();
 
 var app = express();
 var server = http.createServer(app);
@@ -177,13 +177,11 @@ app.get('/section', function (req, res, next) {
 
 // SOCKETS
 io.sockets.on('connection', function (socket) {
-  var assignedRole = roles.assignRole(socket);
   
-  console.log('assignedRole:' + JSON.stringify(assignedRole));
-  console.log('socketId = ' + socket.id);
-  
-  roles.print();
-  
+  assignedRole = roleManager.assign(socket.id);
+  console.log("printing!")
+  roleManager.printUsers();
+  console.log("done printing!")
   socket.emit('init', {
     state: state,
     role: assignedRole
@@ -194,9 +192,9 @@ io.sockets.on('connection', function (socket) {
   });
   
   socket.on('disconnect', function() {
-    roles.unassignRole(this.id);
+    roleManager.unassign(this.id);
     console.log('disconnect detected for id=' + this.id);
-    roles.print();
+    roleManager.printUsers();
   });
 });
 

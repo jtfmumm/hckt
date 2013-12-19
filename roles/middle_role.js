@@ -1,7 +1,9 @@
 function MiddleRole() {
-  this.noteDensity = [7,7,7,7,7,7,7,7];
-  this.chordDensity = [7,7,7,7,7,7,7,7];
-  this.dynamics = [7,7,7,7,7,7,7,7];
+  this.state = {
+    noteDensity: [7,7,7,7,7,7,7,7],
+    chordDensity: [7,7,7,7,7,7,7,7],
+    dynamics: [7,7,7,7,7,7,7,7]
+  } 
 }
 
 

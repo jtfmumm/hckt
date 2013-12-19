@@ -10,7 +10,7 @@ function TopRole() {
     leadEnvelope: {
       attack: 7,
       sustain: 7
-    },
+    }
     bassEnvelope: {
       attack: 7,
       sustain: 7
@@ -18,11 +18,8 @@ function TopRole() {
   };
 
   for (var i=0, len=8; i<len; i++) {
-    this.state.adventurousness[i] = Math.floor(Math.random() * 15);
+    this.state.adventurousness[i] = Math.floor(Math.rand() * 15);
   }
 }
 
 module.exports = TopRole;
-
-
-
