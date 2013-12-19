@@ -86,16 +86,29 @@ ROLES
 
 ## PAYLOAD
 {
-  globalRoot: num,
-  tempo: num,
-  scale: num,
-  adventurousness: [],
-  leadEnvelope: {
-    attack: num,
-    sustain: num             
+  top: { 
+    globalRoot: num,
+    tempo: num,
+    scale: num,
+    adventurousness: [],
+    leadEnvelope: {
+      attack: num,
+      sustain: num             
+    },
+    bassEnvelope: {
+      attack: num,
+      sustain: num
+    }
   },
-  bassEnvelope: {
-    attack: num,
-    sustain: num
-  }
+
+  middles: [{
+      noteDensity: [],
+      chordDensity: [],
+      dynamics: []
+  },  ...  ],
+
+  bottoms: [{
+    lead: []
+    bass: []
+  }, ...  ]
 }
