@@ -64,8 +64,8 @@
 	<div id="scale" class="row-fluid" style="background-color:#ccf;">
 		<div class="span12">
 			<label for="scale-val">Scale</label>
-			<input type="radio" name="scale" value="major"> Major<br>
-			<input type="radio" name="scale" value="minor"> Minor
+			<input id="major-scale" type="radio" name="scale" value="major"> Major<br>
+			<input id="minor-scale" type="radio" name="scale" value="minor"> Minor
 		</div>
 	</div>
 </div>
@@ -75,7 +75,18 @@
 {{#extend "deferred_scripts"}}
 	<script>
 	  (function($) {
-	    $( '#global-root' ).slider({
+			var $majorScaleRadioButton = $('#major-scale');
+			var $minorScaleRadioButton = $('#minor-scale');
+			
+			$majorScaleRadioButton.click(function(evt) {
+				console.log('set scale to Major');
+			});
+			
+			$minorScaleRadioButton.click(function(evt) {
+				console.log('set scale to Minor');
+			});
+		
+			var $globalRootSlider = $( '#global-root' ).slider({
 	      orientation: 'vertical',
 	      range: 'min',
 	      min: 1,
@@ -83,7 +94,7 @@
 	      value: 7
 			});
 
-			$('#tempo').slider({
+			var $tempoSlider = $('#tempo').slider({
 	      orientation: 'vertical',
 	      range: 'min',
 	      min: 110,
@@ -91,7 +102,7 @@
 	      value: 120
 	   	});
 
-			$('#adventurousness').slider({
+			var $adventurousnessSlider =  $('#adventurousness').slider({
 	      orientation: 'vertical',
 	      range: 'min',
 	      min: 0,
@@ -99,7 +110,7 @@
 	      value: 7
 	   	});
 
-			$('#lead-attack').slider({
+			var $leadAttackSlider = $('#lead-attack').slider({
 	      orientation: 'vertical',
 	      range: 'min',
 	      min: 0,
@@ -107,7 +118,7 @@
 	      value: 7
 	   	});
 
-			$('#lead-release').slider({
+			var $leadReleaseSlider = $('#lead-release').slider({
 	      orientation: 'vertical',
 	      range: 'min',
 	      min: 0,
@@ -115,7 +126,7 @@
 	      value: 7
 	   	});
 
-			$('#bass-attack').slider({
+			var $bassAttackSlider = $('#bass-attack').slider({
 	      orientation: 'vertical',
 	      range: 'min',
 	      min: 0,
@@ -123,13 +134,48 @@
 	      value: 7
 	   	});
 
-			$('#bass-release').slider({
+			var $bassReleaseSlider = $('#bass-release').slider({
 	      orientation: 'vertical',
 	      range: 'min',
 	      min: 0,
 	      max: 15,
 	      value: 7
 	   	});
+	
+			$globalRootSlider.on(
+				"slidechange", function( event, ui ) {
+					console.log('globalRootSlider changed to ' + ui.value);
+				});
+				
+			$tempoSlider.on(
+				"slidechange", function( event, ui ) {
+					console.log('tempoSlider changed to ' + ui.value);
+				});	
+
+			$adventurousnessSlider.on(
+				"slidechange", function( event, ui ) {
+					console.log('adventurousnessSlider changed to ' + ui.value);
+				});
+				
+			$leadAttackSlider.on(
+				"slidechange", function( event, ui ) {
+					console.log('leadAttackSlider changed to ' + ui.value);
+				});
+			
+			$leadReleaseSlider.on(
+				"slidechange", function( event, ui ) {
+					console.log('leadReleaseSlider changed to ' + ui.value);
+				});
+				
+			$bassAttackSlider.on(
+				"slidechange", function( event, ui ) {
+					console.log('bassAttackSlider changed to ' + ui.value);
+				});
+				
+			$bassReleaseSlider.on(
+				"slidechange", function( event, ui ) {
+					console.log('bassReleaseSlider changed to ' + ui.value);
+				});
 	  })(jQuery);
 	</script>
 {{/extend}}
