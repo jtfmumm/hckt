@@ -160,6 +160,9 @@ app.get('/', function (req, res, next) {
 app.get('/test', function (req, res, next) {
   return res.render('test', {});
 });
+app.get('/listen', function (req, res, next) {
+  return res.render('test', {});
+});
 app.get('/master', function (req, res, next) {
   return res.render('master', {});
 });
@@ -185,7 +188,7 @@ io.sockets.on('connection', function (socket) {
   console.log(roleManager.translate());
 
   socket.on('state.change', function(data) {
-    socket.broadcast.emit('state.change', state);
+    socket.broadcast.emit('state.change', data);
   });
   
   socket.on('disconnect', function() {

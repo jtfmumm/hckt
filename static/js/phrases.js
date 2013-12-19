@@ -368,5 +368,6 @@ socket.on("init", function(data) {
 });
 
 socket.on("state.change", function(data) {
+  console.log(data)
   settings = data;
 });
