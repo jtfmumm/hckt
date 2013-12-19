@@ -118,6 +118,7 @@ setGlobalRoot(30);
 setScale('majorScale');
 generateSections();
 
+
 console.log(JSON.stringify(state));
 
 // CONFIG
@@ -175,6 +176,7 @@ io.sockets.on('connection', function (socket) {
   
   assignedRole = roleManager.assign(socket.id);
   state = roleManager.translate();
+  
   socket.emit('init', {
     state: state,
     role: assignedRole
