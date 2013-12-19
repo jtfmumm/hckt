@@ -15,24 +15,9 @@ function RoleManager(){
   this.bottoms = [];
 
   for (var i=0; i<NUM_PLAYERS; i++) {
-    if (i < NUM_TOPS) { this.tops.push(null);}
-    if (i < NUM_MIDS) { this.mids.push(null);}
-    if (i < NUM_BOTTOMS) { this.bottoms.push(null);}
-  }
-}
-
-RoleManager.prototype.printUsers = function() {
-  console.log("TOP");
-  for (var i=0; i<this.tops.length; i++) {
-    console.log(i + ": " + this.tops[i]);
-  }
-  console.log("MID");
-  for (var i=0; i<this.mids.length; i++) {
-    console.log(i + ": " + this.mids[i]);
-  }
-  console.log("BOTTOMS");
-  for (var i=0; i<this.bottoms.length; i++) {
-    console.log(i + ": " + this.bottoms[i]);
+    if (i < NUM_TOPS) { this.tops.push({id: -1, role: new TopRole});}
+    if (i < NUM_MIDS) { this.mids.push({id: -1, role: new MidRole});}
+    if (i < NUM_BOTTOMS) { this.bottoms.push({id: -1, role: new BottomRole});}
   }
 }
 
@@ -109,22 +94,36 @@ RoleManager.prototype.translate = function() {
 }
 
 RoleManager.prototype.isTopFull = function() {
-  console.log(this.tops)
-  return this.tops.indexOf(null) === -1 ;
+  for (var i; i < NUM_TOPS; i++) {
+    if (this.tops[i].id === -1) {
+      return false;
+    }
+    return true;
+  }
 }
 
 RoleManager.prototype.isMidFull = function() {
-  return this.mids.indexOf(null) === -1 ;
+  for (var i; i < NUM_MIDS; i++) {
+    if (this.mids[i].id === -1) {
+      return false;
+    }
+    return true;
+  }
 }
 
 RoleManager.prototype.isBottomFull = function() {
-  return this.bottoms.indexOf(null) === -1 ;
+  for (var i; i < NUM_BOTTOMS; i++) {
+    if (this.bottoms[i].id === -1) {
+      return false;
+    }
+    return true;
+  }
 }
 
 RoleManager.prototype.addTop = function(id) {
   console.log("IN ADD TOP");
   for (var i=0, len=this.tops.length; i<len; i++) {
-    if (this.tops[i] == null) {
+    if (!this.tops[i].role.isHuman) {
       this.tops[i] = {id: id, role: new TopRole()};
       break;
     }
@@ -133,7 +132,7 @@ RoleManager.prototype.addTop = function(id) {
 
 RoleManager.prototype.addMid = function(id) {
   for (var i=0, len=this.mids.length; i<len; i++) {
-    if (this.mids[i] == null) {
+    if (!this.mids[i].role.isHuman) {
       this.mids[i] = {id: id, role: new MidRole()};
       break;
     }
@@ -142,7 +141,7 @@ RoleManager.prototype.addMid = function(id) {
 
 RoleManager.prototype.addBottom = function(id) {
   for (var i=0, len=this.bottoms.length; i<len; i++) {
-    if (this.bottoms[i] == null) {
+    if (!this.bottoms[i].role.isHuman) {
       this.bottoms[i] = {id: id, role: new BottomRole()};
       break;
     }
@@ -159,6 +158,21 @@ RoleManager.prototype.getUser = function(id) {
     if (users[i].id === id) {
       return users[i];
     }
+  }
+}
+
+RoleManager.prototype.printUsers = function() {
+  console.log("TOP");
+  for (var i=0; i<this.tops.length; i++) {
+    console.log(i + ": " + this.tops[i]);
+  }
+  console.log("MID");
+  for (var i=0; i<this.mids.length; i++) {
+    console.log(i + ": " + this.mids[i]);
+  }
+  console.log("BOTTOMS");
+  for (var i=0; i<this.bottoms.length; i++) {
+    console.log(i + ": " + this.bottoms[i]);
   }
 }
 
