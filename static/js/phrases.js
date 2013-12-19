@@ -30,8 +30,6 @@ var killReports = function() {
   _reportFlag = false;
 }
 
-
-
 //Phrase representation: tone: -4 - 12, schedule: 0 - 7}]
 //Representing relative notes as scale degrees 1-7
 var phrases = [
@@ -187,8 +185,14 @@ var getTonesTable = function() {
   return tones;
 };
 
+var getEnvelopeValue = function(value) {
+  return value / 100;
+};
 
 var playOsc = function(freq, dur, startTime, attack, release) {
+  attack = getEnvelopeValue(attack);
+  release = getEnvelopeValue(release);
+
   osc = ctx.createOscillator();
   gainNode = ctx.createGain();
 
@@ -201,7 +205,6 @@ var playOsc = function(freq, dur, startTime, attack, release) {
 
   //Play osc through envelope
   osc.start(startTime);
-  gainNode.gain.value = 0;
   gainNode.gain.linearRampToValueAtTime(DEFAULT_AMP, startTime + attack); //Attack
   gainNode.gain.linearRampToValueAtTime(DEFAULT_AMP, startTime + attack + (dur - attack)); //Sustain
   gainNode.gain.linearRampToValueAtTime(0.0, startTime + attack + (dur - attack) + release); //Release
@@ -235,20 +238,19 @@ var playPhrase = function(section, phrasePosition, range) {
   var densitySetting = settings.mids[midPlayer].noteDensity[densityPosition];
   var density = getNoteDensity(densitySetting);
 
-  var section = settings.bottoms[section];
   var phraseRoot = LOCAL_ROOT_VALUES[section];
   var phraseIndex = 0;
   var beatValue, toneLookup, freq, duration, roll = null;
   var tonesTable = getTonesTable();
 
   if (range === "lead") {
-    phraseIndex = section.lead[phrasePosition];
+    phraseIndex = settings.bottoms[section].lead[phrasePosition];
     phrase = getPhrase(phrases[phraseIndex]);
     attack = settings.tops[0].leadEnvelope.attack;
     release = settings.tops[0].leadEnvelope.release;
   } 
   else if (range === "bass") {
-    phraseIndex = section.bass[phrasePosition];		
+    phraseIndex = settings.bottoms[section].bass[phrasePosition];		
     phrase = getPhrase(bassPhrases[phraseIndex]);
     bassTransform = (100 - density) / 2; 
     density = density + bassTransform; 
