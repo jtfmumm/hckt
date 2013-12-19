@@ -15,18 +15,32 @@ function RoleManager(){
   this.bottoms = [];
 
   // initialize roles. if the id == -1, then the role is not a human.
-
-  for (var i=0; i<NUM_PLAYERS; i++) {
-    if (i < NUM_TOPS) { this.tops.push({id: -1, role: new TopRole});}
-    if (i < NUM_MIDS) { this.mids.push({id: -1, role: new MidRole});}
-    if (i < NUM_BOTTOMS) { this.bottoms.push({id: -1, role: new BottomRole});}
+  
+  for(var i=0; i<NUM_TOPS; i++) {
+    this.tops.push({
+        id: -1, 
+        role: new TopRole()
+    });
+  }
+  
+  for(var i=0; i<NUM_MIDS; i++) {
+    this.mids.push({
+        id: -1, 
+        role: new MidRole()
+    });
+  }
+  
+  for(var i=0; i<NUM_BOTTOMS; i++) {
+    this.bottoms.push({
+      id: -1, 
+      role: new BottomRole()
+    });
   }
 }
 
 RoleManager.prototype.assign = function(socketId) {
-
-  var role;
-
+  var role = null;
+    
   if (!this.isTopFull()) {
     var pos = this.addTop(socketId);
     return {position: pos, role: "TopRole"};
@@ -37,13 +51,12 @@ RoleManager.prototype.assign = function(socketId) {
     var pos = this.addBottom(socketId);
     return {position: pos, role: "BottomRole"};
   } else {
-    return "Too many users! Sorry!"
+    return null;
     // Tell the user that there are no spots left. Sorry!!
   }
 }
 
 RoleManager.prototype.unassign = function(socketId) {
-
   for (var i=0; i<this.tops.length; i++) {
     if(this.tops[i].id === socketId) {
       this.tops[i] = {id: -1, role: new TopRole} ;
@@ -95,36 +108,39 @@ RoleManager.prototype.translate = function() {
 }
 
 RoleManager.prototype.isTopFull = function() {
-  for (var i; i < NUM_TOPS; i++) {
+  for (var i=0; i < NUM_TOPS; i++) {
     if (this.tops[i].id === -1) {
       return false;
     }
-    return true;
   }
+  
+  return true;
 }
 
 RoleManager.prototype.isMidFull = function() {
-  for (var i; i < NUM_MIDS; i++) {
+  for (var i=0; i < NUM_MIDS; i++) {
     if (this.mids[i].id === -1) {
       return false;
     }
-    return true;
   }
+  
+  return true;
 }
 
 RoleManager.prototype.isBottomFull = function() {
-  for (var i; i < NUM_BOTTOMS; i++) {
+  for (var i=0; i < NUM_BOTTOMS; i++) {
     if (this.bottoms[i].id === -1) {
       return false;
     }
-    return true;
   }
+  
+  return true;
 }
 
 RoleManager.prototype.addTop = function(id) {
   console.log("IN ADD TOP");
   for (var i=0, len=this.tops.length; i<len; i++) {
-    if (!this.tops[i].role.isHuman) {
+    if (this.tops[i].id === -1) {
       this.tops[i] = {id: id, role: new TopRole()};
       return i;
     }
@@ -133,7 +149,7 @@ RoleManager.prototype.addTop = function(id) {
 
 RoleManager.prototype.addMid = function(id) {
   for (var i=0, len=this.mids.length; i<len; i++) {
-    if (!this.mids[i].role.isHuman) {
+    if (this.mids[i].id === -1) {
       this.mids[i] = {id: id, role: new MidRole()};
       return i;
     }
@@ -142,7 +158,7 @@ RoleManager.prototype.addMid = function(id) {
 
 RoleManager.prototype.addBottom = function(id) {
   for (var i=0, len=this.bottoms.length; i<len; i++) {
-    if (!this.bottoms[i].role.isHuman) {
+    if (this.bottoms[i].id === -1) {
       this.bottoms[i] = {id: id, role: new BottomRole()};
       return i;
     }
@@ -150,7 +166,6 @@ RoleManager.prototype.addBottom = function(id) {
 }
 
 RoleManager.prototype.getUser = function(id) {
-  
   for (var i=0; i<this.tops.length; i++) {
     if(this.tops[i].id === id) {
       return this.tops[i];
