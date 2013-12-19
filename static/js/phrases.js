@@ -26,16 +26,15 @@ var settings = {
 
 
 var SEMI_TONE = Math.pow(2, 1/12);
-var _stopFlag = false;
-
-var settings = null;
-var role = null;
-
-
 var SCALES = {
   "majorScale": [0, 2, 4, 5, 7, 9, 11, 12, 14, 16, 17, 19],
   "minorScale": [0, 2, 3, 5, 7, 8, 10, 12, 14, 15, 17, 19]
 };
+
+var _stopFlag = false;
+
+var settings = null;
+var role = null;
 
 
 //Phrase representation: tone: -4 - 12, schedule: 0 - 7}]
@@ -175,7 +174,7 @@ var getTonesTable = function() {
 };
 
 
-var playTone = function(freq, dur, startTime) {
+var playOsc = function(freq, dur, startTime) {
   osc = ctx.createOscillator();
   osc.frequency.value = freq;
   osc.type = "square";
@@ -189,17 +188,18 @@ var playTone = function(freq, dur, startTime) {
 var playPhrase = function(section, phrasePosition, range) {
   var startTime = ctx.currentTime;
   var density = settings.density;
-  var phraseRoot = settings["sections"][section]["localRootValue"];
+  var section = settings["sections"][section]
+  var phraseRoot = section["localRootValue"];
   var phraseIndex = 0;
   var beatValue, toneLookup, freq, duration, roll = null;
   var tonesTable = getTonesTable();
 
   if (range === "treble") {
-    phraseIndex = settings["sections"][section]["phrases"][phrasePosition];
+    phraseIndex = section["phrases"][phrasePosition];
     phrase = getPhrase(phrases[phraseIndex]);
   } 
   else if (range === "bass") {
-    phraseIndex = settings["sections"][section]["bassPhrases"][phrasePosition];		
+    phraseIndex = section["bassPhrases"][phrasePosition];		
     phrase = getPhrase(bassPhrases[phraseIndex]);
     bassTransform = (100 - density) / 2; 
     density = density + bassTransform; 
@@ -213,7 +213,7 @@ var playPhrase = function(section, phrasePosition, range) {
     roll = (Math.random() * 100);
     
     if (roll < settings.density) {
-      playTone(freq, duration, startTime);
+      playOsc(freq, duration, startTime);
     }
     
     startTime = startTime + duration;
