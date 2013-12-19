@@ -10,8 +10,8 @@
 var DEFAULT_AMP = 0.4;
 var SEMI_TONE = Math.pow(2, 1/12);
 var SCALES = {
-  "majorScale": [0, 2, 4, 5, 7, 9, 11, 12, 14, 16, 17, 19],
-  "minorScale": [0, 2, 3, 5, 7, 8, 10, 12, 14, 15, 17, 19]
+  "majorScale": [0, 2, 4, 5, 7, 9, 11, 12, 14, 16, 17, 19], //, 21, 23, 24, 26, 28, 29, 31, 33, 35, 36, 38, 40, 41, 43],
+  "minorScale": [0, 2, 3, 5, 7, 8, 10, 12, 14, 15, 17, 19] //, 20, 22, 24, 26, 27, 29, 31, 32, 34, 36, 38, 39, 41, 43]
 };
 
 var _stopFlag = false;
@@ -20,6 +20,7 @@ var settings = null;
 var role = null;
 
 var LOCAL_ROOT_VALUES = [1, 5, 3, 6]; 
+var lastChord = 7;
 
 //Reporting
 var _reportFlag = true;
@@ -95,18 +96,19 @@ var bassPhrases = [
 
 var chordMatrix = [
 //          1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12
-/* 1 */  [  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0], // 1
-/* 2 */  [  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0], // 2
-/* 3 */  [  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0], // 3
+//          I      II     III  IV       V      VI
+/* 1 */  [  0,  0, 15,  0,  5, 25,  0, 45,  0, 10,  0,  0], // 1    I
+/* 2 */  [  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0], // 2    
+/* 3 */  [ 15,  0,  0,  0, 25, 10,  0, 45,  0,  5,  0,  0], // 3    II
 /* 4 */  [  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0], // 4
-/* 5 */  [  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0], // 5
-/* 6 */  [  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0], // 6
+/* 5 */  [  5,  0, 15,  0,  0, 10,  0, 25,  0, 45,  0,  0], // 5    III
+/* 6 */  [ 25,  0,  5,  0, 15,  0,  0, 45,  0, 10,  0,  0], // 6    IV
 /* 7 */  [  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0], // 7
-/* 8 */  [  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0], // 8
+/* 8 */  [ 45,  0,  5,  0, 15, 25,  0,  0,  0, 10,  0,  0], // 8    V
 /* 9 */  [  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0], // 9
-/*10 */  [  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0], // 10
+/*10 */  [ 45,  0,  5,  0, 10, 15,  0, 25,  0,  0,  0,  0], // 10   VI
 /*11 */  [  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0], // 11
-/*12 */  [  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0], // 12
+/*12 */  [  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0]  // 12
 //          1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12
   ]
 
@@ -140,7 +142,7 @@ var getScaleType = function(localRootValue) {
 // TODO @paul -- this function needs to be broken up/explained
 var getNoteNumber = function(scaleDegree, localRootValue, range) {
   var noteNumber, newDegree = null;
-  var scaleName = getScaleType(localRootValue);
+  var scaleName = settings.tops[0].scale; //getScaleType(localRootValue);
   var curScale = SCALES[scaleName];
 
   //Check for invalid input
@@ -235,6 +237,23 @@ var getChordDensity = function(value) {
   return null;
 };
 
+var getNextChord = function(phrasePosition) {
+  if (phrasePosition === 0 || phrasePosition === 4) {
+    var curRow = chordMatrix[lastChord];
+    var rowTotal = curRow.reduce(function(a, b) { return a + b; }, 0);
+    var runningTotal = 0;
+    var roll = Math.floor(Math.random() * 100);
+
+    for (var i = 0; i < curRow.length; i++) {
+      runningTotal += curRow[i];
+      if (roll <= runningTotal) {
+        lastChord = i;
+        return i;
+      }
+    }
+  } else return lastChord;
+};
+
 // TODO @paul -- this function needs to be broken up
 var playPhrase = function(section, phrasePosition, range) {
   var attack, release;
@@ -251,6 +270,7 @@ var playPhrase = function(section, phrasePosition, range) {
   var dynamics = getDynamics(dynamicsSetting);
   var amp = pickRandRange(dynamics[0], dynamics[1]);
 
+//  var phraseRoot = getNextChord(phrasePosition);
   var phraseRoot = LOCAL_ROOT_VALUES[section];
   var phraseIndex = 0;
   var beatValue, toneLookup, freq, duration, roll = null;
