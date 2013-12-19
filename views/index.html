@@ -1,3 +1,13 @@
 <div id="wrapper">
   <div id="sequencer"></div>
 </div>
+
+{{#extend "deferred_scripts"}}
+<script>
+	socket.on("init", function(data) {
+	  settings = data.state;
+	  role = data.role;
+		console.log(data);
+	});
+</script>
+{{/extend}}
