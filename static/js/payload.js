@@ -7,11 +7,11 @@
 	    adventurousness: [],
 	    leadEnvelope: {
 	      attack: 7,
-	      sustain: 7
+	      release: 7
 	    },
 	    bassEnvelope: {
 	      attack: 7,
-	      sustain: 7
+	      release: 7
 	    }
 	}],
 	mids: [{

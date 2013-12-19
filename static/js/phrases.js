@@ -189,6 +189,7 @@ var getTonesTable = function() {
 
 
 var playOsc = function(freq, dur, startTime, attack, release) {
+  report("Attack: " + attack + " Release: " + release);
   osc = ctx.createOscillator();
   gainNode = ctx.createGain();
 
@@ -196,15 +197,16 @@ var playOsc = function(freq, dur, startTime, attack, release) {
   osc.type = "square";
   
   //Connect nodes
-  osc.connect(gainNode);
-  gainNode.connect(ctx.destination);
+  osc.connect(ctx.destination);
+  //osc.connect(gainNode);
+  //gainNode.connect(ctx.destination);
 
   //Play osc through envelope
   osc.start(startTime);
-  gainNode.gain.value = 0;
-  gainNode.gain.linearRampToValueAtTime(DEFAULT_AMP, startTime + attack); //Attack
-  gainNode.gain.linearRampToValueAtTime(DEFAULT_AMP, startTime + attack + (dur - attack)); //Sustain
-  gainNode.gain.linearRampToValueAtTime(0.0, startTime + attack + (dur - attack) + release); //Release
+  osc.stop(startTime + 1);
+  // gainNode.gain.linearRampToValueAtTime(DEFAULT_AMP, startTime + attack); //Attack
+  // gainNode.gain.linearRampToValueAtTime(DEFAULT_AMP, startTime + attack + (dur - attack)); //Sustain
+  // gainNode.gain.linearRampToValueAtTime(0.0, startTime + attack + (dur - attack) + release); //Release
 };
 
 var getNoteDensity = function(value) {
@@ -235,20 +237,19 @@ var playPhrase = function(section, phrasePosition, range) {
   var densitySetting = settings.mids[midPlayer].noteDensity[densityPosition];
   var density = getNoteDensity(densitySetting);
 
-  var section = settings.bottoms[section];
   var phraseRoot = LOCAL_ROOT_VALUES[section];
   var phraseIndex = 0;
   var beatValue, toneLookup, freq, duration, roll = null;
   var tonesTable = getTonesTable();
 
   if (range === "lead") {
-    phraseIndex = section.lead[phrasePosition];
+    phraseIndex = settings.bottoms[section].lead[phrasePosition];
     phrase = getPhrase(phrases[phraseIndex]);
     attack = settings.tops[0].leadEnvelope.attack;
     release = settings.tops[0].leadEnvelope.release;
   } 
   else if (range === "bass") {
-    phraseIndex = section.bass[phrasePosition];		
+    phraseIndex = settings.bottoms[section].bass[phrasePosition];		
     phrase = getPhrase(bassPhrases[phraseIndex]);
     bassTransform = (100 - density) / 2; 
     density = density + bassTransform; 
