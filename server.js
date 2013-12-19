@@ -174,6 +174,7 @@ app.get('/bottom', function (req, res, next) {
 io.sockets.on('connection', function (socket) {
   
   assignedRole = roleManager.assign(socket.id);
+  state = roleManager.translate();
   socket.emit('init', {
     state: state,
     role: assignedRole
