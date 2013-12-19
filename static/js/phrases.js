@@ -30,8 +30,6 @@ var killReports = function() {
   _reportFlag = false;
 }
 
-
-
 //Phrase representation: tone: -4 - 12, schedule: 0 - 7}]
 //Representing relative notes as scale degrees 1-7
 var phrases = [
@@ -187,9 +185,14 @@ var getTonesTable = function() {
   return tones;
 };
 
+var getEnvelopeValue = function(value) {
+  return value / 100;
+};
 
 var playOsc = function(freq, dur, startTime, attack, release) {
-  report("Attack: " + attack + " Release: " + release);
+  attack = getEnvelopeValue(attack);
+  release = getEnvelopeValue(release);
+
   osc = ctx.createOscillator();
   gainNode = ctx.createGain();
 
@@ -197,16 +200,14 @@ var playOsc = function(freq, dur, startTime, attack, release) {
   osc.type = "square";
   
   //Connect nodes
-  osc.connect(ctx.destination);
-  //osc.connect(gainNode);
-  //gainNode.connect(ctx.destination);
+  osc.connect(gainNode);
+  gainNode.connect(ctx.destination);
 
   //Play osc through envelope
   osc.start(startTime);
-  osc.stop(startTime + 1);
-  // gainNode.gain.linearRampToValueAtTime(DEFAULT_AMP, startTime + attack); //Attack
-  // gainNode.gain.linearRampToValueAtTime(DEFAULT_AMP, startTime + attack + (dur - attack)); //Sustain
-  // gainNode.gain.linearRampToValueAtTime(0.0, startTime + attack + (dur - attack) + release); //Release
+  gainNode.gain.linearRampToValueAtTime(DEFAULT_AMP, startTime + attack); //Attack
+  gainNode.gain.linearRampToValueAtTime(DEFAULT_AMP, startTime + attack + (dur - attack)); //Sustain
+  gainNode.gain.linearRampToValueAtTime(0.0, startTime + attack + (dur - attack) + release); //Release
 };
 
 var getNoteDensity = function(value) {
