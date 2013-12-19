@@ -1,14 +1,59 @@
 {{#extend "additional_styles"}}
+<link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.2/css/bootstrap-responsive.css">
+<link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.2/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="//code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
 {{/extend}}
 
 {{#extend "additional_scripts"}}
+<script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
 <script src="//code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 {{/extend}}
 
-<!-- ADVENTUROUSNESS -->
+<div style="margin:15px;">
+	<div class="row-fluid" style="background-color:#fcc;">
+		<!-- NOTE DENSITY -->
+		<div class="span4">
+			<label for="note-density">Note Density</label>
+			<div id="note-density"></div>
+		</div>
+	
+		<!-- CHORD DENSITY -->
+		<div class="span4">
+			<label for="chord-density">Chord Density</label>
+			<div id="chord-density"></div>
+		</div>
 
-<!-- LEAD ENVELOP -->
+		<!-- DYNAMICS -->
+		<div class="span4">
+			<label for="dynamics">Dynamics</label>
+			<div id="dynamics"></div>	
+		</div>
+	</div>
+</div>
 
-<!-- BASS ENVELOP -->
-
+{{#extend "deferred_scripts"}}
+	<script>
+		$('#note-density').slider({
+		  orientation: 'vertical',
+		  range: 'min',
+		  min: 0,
+		  max: 15,
+		  value: 7
+		});
+		$('#chord-density').slider({
+		  orientation: 'vertical',
+		  range: 'min',
+		  min: 0,
+		  max: 15,
+		  value: 7
+		});
+		$('#dynamics').slider({
+		  orientation: 'vertical',
+		  range: 'min',
+		  min: 0,
+		  max: 15,
+		  value: 7
+		});
+	
+	</script>
+{{/extend}}
