@@ -21,6 +21,16 @@ var role = null;
 
 var LOCAL_ROOT_VALUES = [1, 5, 3, 6]; 
 
+//Reporting
+var _reportFlag = true;
+var report = function(msg) {
+  if (_reportFlag) console.log(msg);
+}
+var killReports = function() {
+  _reportFlag = false;
+}
+
+
 
 //Phrase representation: tone: -4 - 12, schedule: 0 - 7}]
 //Representing relative notes as scale degrees 1-7
@@ -253,7 +263,7 @@ var playPhrase = function(section, phrasePosition, range) {
     duration = beatValue / phrase.notes[i].noteValue;
     roll = (Math.random() * 100);
     
-    if (roll < settings.tops[0].density) {
+    if (roll < density) {
       playOsc(freq, duration, startTime, attack, release);
     }
     
@@ -313,6 +323,7 @@ var restartSong = function() {
 
 
 socket.on("init", function(data) {
+  console.log("State: " + data.state);
   settings = data.state;
   role = data.role;
 
