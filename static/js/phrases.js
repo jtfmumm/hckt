@@ -7,24 +7,7 @@
 }
 */
 
-/*
-var settings = {
-  tempo: 120,
-  scale: "majorScale"
-  trebleDensity: 80,
-  bassDensity: 
-  sections: [
-    {"globalRoot":
-     "localRootValue": 
-     "phrases": [...]}, phraseIndex values 0-23
-     "bassPhrases": [...]}, bassPhraseIndex values 0-15 
-    ...
-    }, ...]
-}
-
-*/
-
-
+var DEFAULT_AMP = 0.4;
 var SEMI_TONE = Math.pow(2, 1/12);
 var SCALES = {
   "majorScale": [0, 2, 4, 5, 7, 9, 11, 12, 14, 16, 17, 19],
@@ -174,13 +157,23 @@ var getTonesTable = function() {
 };
 
 
-var playOsc = function(freq, dur, startTime) {
+var playOsc = function(freq, dur, startTime, attack, release) {
   osc = ctx.createOscillator();
+  gainNode = ctx.createGain();
+
   osc.frequency.value = freq;
   osc.type = "square";
-  osc.connect(ctx.destination);
+  
+  //Connect nodes
+  osc.connect(gainNode);
+  gainNode.connect(ctx.destination);
+
+  //Play osc through envelope
   osc.start(startTime);
-  osc.stop(startTime + dur);
+  gainNode.gain.value = 0;
+  gainNode.gain.linearRampToValueAtTime(DEFAULT_AMP, startTime + attack); //Attack
+  gainNode.gain.linearRampToValueAtTime(DEFAULT_AMP, startTime + attack + (dur - attack)); //Sustain
+  gainNode.gain.linearRampToValueAtTime(0.0, startTime + attack + (dur - attack) + release); //Release
 };
 
 
