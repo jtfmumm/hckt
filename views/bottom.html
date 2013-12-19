@@ -98,56 +98,56 @@
 
 {{#extend "deferred_scripts"}}
 	<script>
-		$('#lead-1').slider({
+		var $leadSlider1 = $('#lead-1').slider({
 		  orientation: 'vertical',
 		  range: 'min',
 		  min: 0,
 		  max: 23,
 		  value: 7
 		});
-		$('#lead-2').slider({
+		var $leadSlider2 = $('#lead-2').slider({
 		  orientation: 'vertical',
 		  range: 'min',
 		  min: 0,
 		  max: 23,
 		  value: 7
 		});
-		$('#lead-3').slider({
+		var $leadSlider3 = $('#lead-3').slider({
 		  orientation: 'vertical',
 		  range: 'min',
 		  min: 0,
 		  max: 23,
 		  value: 7
 		});
-		$('#lead-4').slider({
+		var $leadSlider4 = $('#lead-4').slider({
 		  orientation: 'vertical',
 		  range: 'min',
 		  min: 0,
 		  max: 23,
 		  value: 7
 		});
-		$('#lead-5').slider({
+		var $leadSlider5 = $('#lead-5').slider({
 		  orientation: 'vertical',
 		  range: 'min',
 		  min: 0,
 		  max: 23,
 		  value: 7
 		});
-		$('#lead-6').slider({
+		var $leadSlider6 = $('#lead-6').slider({
 		  orientation: 'vertical',
 		  range: 'min',
 		  min: 0,
 		  max: 23,
 		  value: 7
 		});
-		$('#lead-7').slider({
+		var $leadSlider7 = $('#lead-7').slider({
 		  orientation: 'vertical',
 		  range: 'min',
 		  min: 0,
 		  max: 23,
 		  value: 7
 		});
-		$('#lead-8').slider({
+		var $leadSlider8 = $('#lead-8').slider({
 		  orientation: 'vertical',
 		  range: 'min',
 		  min: 0,
@@ -156,61 +156,175 @@
 		});
 		
 		
-		$('#bass-1').slider({
+		var $bassSlider1 = $('#bass-1').slider({
 		  orientation: 'vertical',
 		  range: 'min',
 		  min: 0,
 		  max: 23,
 		  value: 7
 		});
-		$('#bass-2').slider({
+		var $bassSlider2 = $('#bass-2').slider({
 		  orientation: 'vertical',
 		  range: 'min',
 		  min: 0,
 		  max: 23,
 		  value: 7
 		});
-		$('#bass-3').slider({
+		var $bassSlider3 = $('#bass-3').slider({
 		  orientation: 'vertical',
 		  range: 'min',
 		  min: 0,
 		  max: 23,
 		  value: 7
 		});
-		$('#bass-4').slider({
+		var $bassSlider4 = $('#bass-4').slider({
 		  orientation: 'vertical',
 		  range: 'min',
 		  min: 0,
 		  max: 23,
 		  value: 7
 		});
-		$('#bass-5').slider({
+		var $bassSlider5 = $('#bass-5').slider({
 		  orientation: 'vertical',
 		  range: 'min',
 		  min: 0,
 		  max: 23,
 		  value: 7
 		});
-		$('#bass-6').slider({
+		var $bassSlider6 = $('#bass-6').slider({
 		  orientation: 'vertical',
 		  range: 'min',
 		  min: 0,
 		  max: 23,
 		  value: 7
 		});
-		$('#bass-7').slider({
+		var $bassSlider7 = $('#bass-7').slider({
 		  orientation: 'vertical',
 		  range: 'min',
 		  min: 0,
 		  max: 23,
 		  value: 7
 		});
-		$('#bass-8').slider({
+		var $bassSlider8 = $('#bass-8').slider({
 		  orientation: 'vertical',
 		  range: 'min',
 		  min: 0,
 		  max: 23,
 		  value: 7
 		});
+		
+		$leadSlider1.on(
+			"slidechange", function( event, ui ) {
+				console.log('leadSlider1 changed to ' + ui.value);
+			});
+			
+		$leadSlider2.on(
+			"slidechange", function( event, ui ) {
+				console.log('leadSlider2 changed to ' + ui.value);
+			});
+			
+		$leadSlider3.on(
+			"slidechange", function( event, ui ) {
+				console.log('leadSlider3 changed to ' + ui.value);
+			});
+			
+		$leadSlider4.on(
+			"slidechange", function( event, ui ) {
+				console.log('leadSlider4 changed to ' + ui.value);
+			});
+		
+		$leadSlider5.on(
+			"slidechange", function( event, ui ) {
+				console.log('leadSlider5 changed to ' + ui.value);
+			});
+			
+		$leadSlider6.on(
+			"slidechange", function( event, ui ) {
+				console.log('leadSlider6 changed to ' + ui.value);
+			});
+
+		$leadSlider7.on(
+			"slidechange", function( event, ui ) {
+				console.log('leadSlider7 changed to ' + ui.value);
+			});
+			
+		$leadSlider8.on(
+			"slidechange", function( event, ui ) {
+				console.log('leadSlider8 changed to ' + ui.value);
+			});
+			
+			
+			
+		$bassSlider1.on(
+			"slidechange", function( event, ui ) {
+				console.log('bassSlider1 changed to ' + ui.value);
+			});
+
+		$bassSlider2.on(
+			"slidechange", function( event, ui ) {
+				console.log('bassSlider2 changed to ' + ui.value);
+			});
+
+		$bassSlider3.on(
+			"slidechange", function( event, ui ) {
+				console.log('bassSlider3 changed to ' + ui.value);
+			});
+
+		$bassSlider4.on(
+			"slidechange", function( event, ui ) {
+				console.log('bassSlider4 changed to ' + ui.value);
+			});
+
+		$bassSlider5.on(
+			"slidechange", function( event, ui ) {
+				console.log('bassSlider5 changed to ' + ui.value);
+			});
+
+		$bassSlider6.on(
+			"slidechange", function( event, ui ) {
+				console.log('bassSlider6 changed to ' + ui.value);
+			});
+
+		$bassSlider7.on(
+			"slidechange", function( event, ui ) {
+				console.log('bassSlider7 changed to ' + ui.value);
+			});
+
+		$bassSlider8.on(
+			"slidechange", function( event, ui ) {
+				console.log('bassSlider8 changed to ' + ui.value);
+			});
+
+
+		$bassSlider1.on(
+			"slidechange", function( event, ui ) {
+				console.log('bassSlider1 changed to ' + ui.value);
+			});
+
+		socket.on("init", function(data) {
+		  settings = data.state;
+		  role = data.role;
+			/*
+			$leadSlider1.slider( "value", 55 );
+			$leadSlider2.slider( "value", 55 );
+			$leadSlider3.slider( "value", 55 );
+			$leadSlider4.slider( "value", 55 );
+			$leadSlider5.slider( "value", 55 );
+			$leadSlider6.slider( "value", 55 );
+			$leadSlider7.slider( "value", 55 );
+			$leadSlider8.slider( "value", 55 );
+			
+			$bassSlider1.slider( "value", 55 );
+			$bassSlider2.slider( "value", 55 );
+			$bassSlider3.slider( "value", 55 );
+			$bassSlider4.slider( "value", 55 );
+			$bassSlider5.slider( "value", 55 );
+			$bassSlider6.slider( "value", 55 );
+			$bassSlider7.slider( "value", 55 );
+			$bassSlider8.slider( "value", 55 );
+			*/
+		});
+
+
 	</script>
 {{/extend}}

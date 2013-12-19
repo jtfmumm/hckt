@@ -10,50 +10,133 @@
 {{/extend}}
 
 <div style="margin:15px;">
-	<div class="row-fluid" style="background-color:#fcc;">
+	<div class="row-fluid" style="background-color:#ccf;">
 		<!-- NOTE DENSITY -->
 		<div class="span4">
-			<label for="note-density">Note Density</label>
-			<div id="note-density"></div>
+			<label for="note-density-1">Note Density</label>
+			<div id="note-density-1"></div>
 		</div>
 	
 		<!-- CHORD DENSITY -->
 		<div class="span4">
-			<label for="chord-density">Chord Density</label>
-			<div id="chord-density"></div>
+			<label for="chord-density-1">Chord Density</label>
+			<div id="chord-density-1"></div>
 		</div>
 
 		<!-- DYNAMICS -->
 		<div class="span4">
-			<label for="dynamics">Dynamics</label>
-			<div id="dynamics"></div>	
+			<label for="dynamics-1">Dynamics</label>
+			<div id="dynamics-1"></div>	
+		</div>
+	</div>
+	
+	<div class="row-fluid" style="background-color:#cfc;">
+		<!-- NOTE DENSITY -->
+		<div class="span4">
+			<label for="note-density-2">Note Density</label>
+			<div id="note-density-2"></div>
+		</div>
+	
+		<!-- CHORD DENSITY -->
+		<div class="span4">
+			<label for="chord-density-2">Chord Density</label>
+			<div id="chord-density-2"></div>
+		</div>
+
+		<!-- DYNAMICS -->
+		<div class="span4">
+			<label for="dynamics-2">Dynamics</label>
+			<div id="dynamics-2"></div>	
 		</div>
 	</div>
 </div>
 
 {{#extend "deferred_scripts"}}
 	<script>
-		$('#note-density').slider({
+		var $noteDensitySlider1 = $('#note-density-1').slider({
 		  orientation: 'vertical',
 		  range: 'min',
 		  min: 0,
 		  max: 15,
 		  value: 7
 		});
-		$('#chord-density').slider({
+		
+		var $chordDensitySlider1 = $('#chord-density-1').slider({
 		  orientation: 'vertical',
 		  range: 'min',
 		  min: 0,
 		  max: 15,
 		  value: 7
 		});
-		$('#dynamics').slider({
+		
+		var $dynamicsSlider1 = $('#dynamics-1').slider({
 		  orientation: 'vertical',
 		  range: 'min',
 		  min: 0,
 		  max: 15,
 		  value: 7
 		});
-	
+		
+		var $noteDensitySlider2 =  $('#note-density-2').slider({
+		  orientation: 'vertical',
+		  range: 'min',
+		  min: 0,
+		  max: 15,
+		  value: 7
+		});
+		
+		var $chordDensitySlider2 = $('#chord-density-2').slider({
+		  orientation: 'vertical',
+		  range: 'min',
+		  min: 0,
+		  max: 15,
+		  value: 7
+		});
+		
+		var $dynamicsSlider2 = $('#dynamics-2').slider({
+		  orientation: 'vertical',
+		  range: 'min',
+		  min: 0,
+		  max: 15,
+		  value: 7
+		});
+		
+		$noteDensitySlider1.on(
+			"slidechange", function( event, ui ) {
+				console.log('noteDensitySlider1 changed to ' + ui.value);
+			});
+		$chordDensitySlider1.on(
+			"slidechange", function( event, ui ) {
+				console.log('chordDensitySlider1 changed to ' + ui.value);
+			});
+		$dynamicsSlider1.on(
+			"slidechange", function( event, ui ) {
+				console.log('dynamicsSlider1 changed to ' + ui.value);
+			});
+		$noteDensitySlider2.on(
+			"slidechange", function( event, ui ) {
+				console.log('noteDensitySlider2 changed to ' + ui.value);
+			});
+		$chordDensitySlider2.on(
+			"slidechange", function( event, ui ) {
+				console.log('chordDensitySlider2 changed to ' + ui.value);
+			});
+		$dynamicsSlider2.on(
+			"slidechange", function( event, ui ) {
+				console.log('dynamicsSlider2 changed to ' + ui.value);
+			});
+			
+		socket.on("init", function(data) {
+		  settings = data.state;
+		  role = data.role;
+			/*
+			$noteDensitySlider1.slider( "value", 55 );
+			$chordDensitySlider1.slider( "value", 55 );
+			$dynamicsSlider1.slider( "value", 55 );
+			$noteDensitySlider2.slider( "value", 55 );
+			$chordDensitySlider2.slider( "value", 55 );
+			$dynamicsSlider2.slider( "value", 55 );
+			*/
+		});
 	</script>
 {{/extend}}
