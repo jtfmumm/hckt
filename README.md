@@ -52,7 +52,7 @@ ROLES
 * Lead Envelope & Bass Envelope (two faders)
   * Attack --> how fast does a note start sounding
     * [0, 15]
-  * Sustain --> how long does a note sustain    
+  * Release --> how long does a note sustain    
     * [0, 15]
 
 
