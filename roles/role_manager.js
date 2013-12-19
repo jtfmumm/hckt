@@ -44,20 +44,20 @@ RoleManager.prototype.assign = function(socketId) {
 RoleManager.prototype.unassign = function(socketId) {
 
   for (var i=0; i<this.tops.length; i++) {
-    if(this.tops[i] && this.tops[i].id === socketId) {
-      this.tops[i] = null;
+    if(this.tops[i].id === socketId) {
+      this.tops[i] = {id: -1, role: new TopRole} ;
       return;
     }
   }
   for (var i=0; i<this.mids.length; i++) {
     if(this.mids[i] && this.mids[i].id === socketId) {
-      this.mids[i] = null;
+      this.mids[i] = {id: -1, role: new MidRole} ;
       return;
     }
   }
   for (var i=0; i<this.bottoms.length; i++) {
-    if(this.bottoms[i] && this.bottoms[i].id === socketId) {
-      this.bottoms[i] = null;
+    if(this.bottoms[i].id === socketId) {
+      this.bottoms[i] = {id: -1, role: new BottomRole} ;
       return;
     }
   }
