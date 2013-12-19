@@ -125,5 +125,18 @@
 			"slidechange", function( event, ui ) {
 				console.log('dynamicsSlider2 changed to ' + ui.value);
 			});
+			
+		socket.on("init", function(data) {
+		  settings = data.state;
+		  role = data.role;
+			/*
+			$noteDensitySlider1.slider( "value", 55 );
+			$chordDensitySlider1.slider( "value", 55 );
+			$dynamicsSlider1.slider( "value", 55 );
+			$noteDensitySlider2.slider( "value", 55 );
+			$chordDensitySlider2.slider( "value", 55 );
+			$dynamicsSlider2.slider( "value", 55 );
+			*/
+		});
 	</script>
 {{/extend}}

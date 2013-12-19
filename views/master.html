@@ -75,6 +75,9 @@
 {{#extend "deferred_scripts"}}
 	<script>
 	  (function($) {
+			var state = null;
+			var role = null;
+		
 			var $majorScaleRadioButton = $('#major-scale');
 			var $minorScaleRadioButton = $('#minor-scale');
 			
@@ -176,6 +179,22 @@
 				"slidechange", function( event, ui ) {
 					console.log('bassReleaseSlider changed to ' + ui.value);
 				});
+				
+				
+			socket.on("init", function(data) {
+			  settings = data.state;
+			  role = data.role;
+				/*
+				$globalRootSlider.slider( "value", 55 );
+				$tempoSlider.slider( "value", 55 );
+				$adventurousnessSlider.slider( "value", 55 );
+				$leadAttackSlider.slider( "value", 55 );
+				$leadReleaseSlider.slider( "value", 55 );
+				$bassAttackSlider.slider( "value", 55 );
+				$bassReleaseSlider.slider( "value", 55 );
+				*/
+			});	
+				
 	  })(jQuery);
 	</script>
 {{/extend}}

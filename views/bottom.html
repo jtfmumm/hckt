@@ -301,6 +301,30 @@
 				console.log('bassSlider1 changed to ' + ui.value);
 			});
 
+		socket.on("init", function(data) {
+		  settings = data.state;
+		  role = data.role;
+			/*
+			$leadSlider1.slider( "value", 55 );
+			$leadSlider2.slider( "value", 55 );
+			$leadSlider3.slider( "value", 55 );
+			$leadSlider4.slider( "value", 55 );
+			$leadSlider5.slider( "value", 55 );
+			$leadSlider6.slider( "value", 55 );
+			$leadSlider7.slider( "value", 55 );
+			$leadSlider8.slider( "value", 55 );
+			
+			$bassSlider1.slider( "value", 55 );
+			$bassSlider2.slider( "value", 55 );
+			$bassSlider3.slider( "value", 55 );
+			$bassSlider4.slider( "value", 55 );
+			$bassSlider5.slider( "value", 55 );
+			$bassSlider6.slider( "value", 55 );
+			$bassSlider7.slider( "value", 55 );
+			$bassSlider8.slider( "value", 55 );
+			*/
+		});
+
 
 	</script>
 {{/extend}}
