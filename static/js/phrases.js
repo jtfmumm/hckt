@@ -98,7 +98,7 @@ function Phrase(notes) {
 
 
 var getScaleType = function(localRootValue) {
-  curScale = settings.tops[0].scale;
+  curScale = settings["tops"][0]["scale"];
   oppScale = (curScale === 'majorScale') ? 'minorScale' : 'majorScale';
 
   if (localRootValue === 2 || 
@@ -121,11 +121,11 @@ var getNoteNumber = function(scaleDegree, localRootValue, range) {
   } 
   else if (scaleDegree > 0) {
     newDegree = scaleDegree - 1;
-    noteNumber = (settings.tops[0].globalRoot + localRootValue) + curScale[newDegree];
+    noteNumber = (settings["tops"][0]["globalRoot"] + localRootValue) + curScale[newDegree];
   } 
   else {
     newDegree = curScale.length + (scaleDegree - 1);
-    noteNumber = (settings.tops[0].globalRoot - 12 + localRootValue) + curScale[newDegree];
+    noteNumber = (settings["tops"][0]["globalRoot"] - 12 + localRootValue) + curScale[newDegree];
   }
 
   if (range === "bass") { 
@@ -192,37 +192,37 @@ var playPhrase = function(section, phrasePosition, range) {
   //Each density setting corresponds to 2 phrases
   //and corresponds to an index in the appropriate midPlayer's settings array 
   var densitySetting = (mid + 1) * Math.floor(phrasePosition / 2);  
-  var density = settings.mids[midPlayer]["nodeDensity"][densitySetting];
-  
-  var section = settings.bottoms[section];
+  var density = settings["mids"][midPlayer]["nodeDensity"][densitySetting];
+
+  var sectionObj = settings["bottoms"][section];
   var phraseRoot = LOCAL_ROOT_VALUES[section];
   var phraseIndex = 0;
   var beatValue, toneLookup, freq, duration, roll = null;
   var tonesTable = getTonesTable();
 
   if (range === "lead") {
-    phraseIndex = section.lead[phrasePosition];
+    phraseIndex = sectionObj["lead"][phrasePosition];
     phrase = getPhrase(phrases[phraseIndex]);
-    attack = settings.tops[0].leadEnvelope.attack;
-    release = settings.tops[0].leadEnvelope.release;
+    attack = settings["tops"][0]["leadEnvelope"]["attack"];
+    release = settings["tops"][0]["leadEnvelope"]["release"];
   } 
   else if (range === "bass") {
     phraseIndex = section.bass[phrasePosition];		
     phrase = getPhrase(bassPhrases[phraseIndex]);
     bassTransform = (100 - density) / 2; 
     density = density + bassTransform; 
-    attack = settings.tops[0].bassEnvelope.attack;
-    release = settings.tops[0].bassEnvelope.release;
+    attack = settings["tops"][0]["bassEnvelope"]["attack"];
+    release = settings["tops"][0]["bassEnvelope"]["release"];
   }
 
   for (var i = 0; i < phrase.notes.length; i++) {
-    beatValue = (1 / (settings.tops[0].tempo / 60)) * 4; 
+    beatValue = (1 / (settings["tops"][0]["tempo"] / 60)) * 4; 
     toneLookup = getNoteNumber(phrase.notes[i].tone, phraseRoot, range);
     freq = tonesTable[toneLookup];
     duration = beatValue / phrase.notes[i].noteValue;
     roll = (Math.random() * 100);
     
-    if (roll < settings.tops[0].density) {
+    if (roll < settings["tops"][0]["density"]) {
       playOsc(freq, duration, startTime, attack, release);
     }
     
@@ -232,7 +232,7 @@ var playPhrase = function(section, phrasePosition, range) {
 
 
 var getDuration = function() {
-  var beatValue = (1 / (settings.tops[0].tempo / 60));
+  var beatValue = (1 / (settings["tops"][0]["tempo"] / 60));
   var duration = (2 * beatValue) * 1000; //Convert to ms for setTimeout
   return duration; 
 };
