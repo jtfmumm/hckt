@@ -25,10 +25,14 @@ var LOCAL_ROOT_VALUES = [1, 5, 3, 6];
 var _reportFlag = true;
 var report = function(msg) {
   if (_reportFlag) console.log(msg);
-}
+};
 var killReports = function() {
   _reportFlag = false;
-}
+};
+
+var pickRandRange = function(low, high) {
+  return (Math.random() * (high - low)) + low;
+};
 
 //Phrase representation: tone: -4 - 12, schedule: 0 - 7}]
 //Representing relative notes as scale degrees 1-7
@@ -189,7 +193,11 @@ var getEnvelopeValue = function(value) {
   return value / 100;
 };
 
-var playOsc = function(freq, dur, startTime, attack, release) {
+var getAmp = function() {
+
+};
+
+var playOsc = function(freq, dur, startTime, attack, release, amp) {
   attack = getEnvelopeValue(attack);
   release = getEnvelopeValue(release);
 
@@ -205,14 +213,16 @@ var playOsc = function(freq, dur, startTime, attack, release) {
 
   //Play osc through envelope
   osc.start(startTime);
-  gainNode.gain.linearRampToValueAtTime(DEFAULT_AMP, startTime + attack); //Attack
-  gainNode.gain.linearRampToValueAtTime(DEFAULT_AMP, startTime + attack + (dur - attack)); //Sustain
-  gainNode.gain.linearRampToValueAtTime(0.0, startTime + attack + (dur - attack) + release); //Release
+  gainNode.gain.value = 0;
+  gainNode.gain.linearRampToValueAtTime(0, startTime); //Attack
+  gainNode.gain.linearRampToValueAtTime(amp, startTime + attack); //Attack
+  gainNode.gain.linearRampToValueAtTime(amp, startTime + dur + attack); //Sustain
+  gainNode.gain.linearRampToValueAtTime(0.0, startTime + dur + attack + release); //Release
 };
 
 var getNoteDensity = function(value) {
   //Values from 60-94
-  return ((value * 2) + 60);
+  return (value + 80);
 };
 
 var getDynamics = function(value) {
@@ -234,9 +244,12 @@ var playPhrase = function(section, phrasePosition, range) {
   var midPlayer = section % 2;
   //Each density setting corresponds to 2 phrases
   //and corresponds to an index in the appropriate midPlayer's settings array 
-  var densityPosition = (midPlayer + 1) * Math.floor(phrasePosition / 2);  
-  var densitySetting = settings.mids[midPlayer].noteDensity[densityPosition];
+  var midPosition = (midPlayer + 1) * Math.floor(phrasePosition / 2);  
+  var densitySetting = settings.mids[midPlayer].noteDensity[midPosition];
   var density = getNoteDensity(densitySetting);
+  var dynamicsSetting = settings.mids[midPlayer].dynamics[midPosition];
+  var dynamics = getDynamics(dynamicsSetting);
+  var amp = pickRandRange(dynamics[0], dynamics[1]);
 
   var phraseRoot = LOCAL_ROOT_VALUES[section];
   var phraseIndex = 0;
@@ -266,7 +279,7 @@ var playPhrase = function(section, phrasePosition, range) {
     roll = (Math.random() * 100);
     
     if (roll < density) {
-      playOsc(freq, duration, startTime, attack, release);
+      playOsc(freq, duration, startTime, attack, release, amp);
     }
     
     startTime = startTime + duration;
