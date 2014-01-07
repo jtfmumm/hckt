@@ -4,7 +4,7 @@ Hexacontakaitetratet
 
 A node.js-based multi-level collaborative sequencer.  
 
-(This is a work-in-progress.  This is description has not been completely implemented yet.)
+(This is a work-in-progress.  This description has not been completely implemented yet.)
 
 When players log on to a session, they are assigned a "role" corresponding to an 8-fader sequencer.  
 These sequencers are organized in a hierarchical fashion.  At the lowest level, they correspond to
